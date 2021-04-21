@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+
+    <!--<bean id="user" class="org.zk.domain.User">-->
+        <!--<property name="id" value="100"/>-->
+        <!--<property name="username" value="zk"/>-->
+        <!--<property name="order" ref="order"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="order" class="org.zk.domain.Order"></bean>-->
+
+    <bean id="user" class="org.zk.domain.UserFactory"></bean>
+
+</beans>
+
+
+
