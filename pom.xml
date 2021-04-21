@@ -12,6 +12,7 @@
     <modules>
         <module>simple-spring</module>
         <module>simple-mybatis</module>
+        <module>simple-mybatis-spring</module>
         <module>simple-demo</module>
     </modules>
 

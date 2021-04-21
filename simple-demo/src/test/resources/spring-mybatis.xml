@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+
+    <bean id="sqlSessionFactory" class="org.zk.simplemybatisspring.SqlSessionFactoryBean">
+      <property name="configLocation" value="mybatis.xml"></property>
+    </bean>
+
+    <bean id="userDao" class="org.zk.simplemybatisspring.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+        <property name="mapperInterface" value="org.zk.simpledemo.dao.UserDao"></property>
+    </bean>
+
+
+
+</beans>
+
+
+
