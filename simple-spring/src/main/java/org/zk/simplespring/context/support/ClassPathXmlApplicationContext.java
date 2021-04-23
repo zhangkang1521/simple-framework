@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zk.simplespring.DefaultListableBeanFactory;
 import org.zk.simplespring.XmlBeanDefinitionReader;
+import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
+
+import java.util.List;
 
 public class ClassPathXmlApplicationContext implements ApplicationContext {
 
@@ -45,6 +48,12 @@ public class ClassPathXmlApplicationContext implements ApplicationContext {
 	 * 注册bean后置处理器
 	 */
 	private void registerBeanPostProcessors() {
+		List<String> beanNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class);
+		for (String beanName : beanNames) {
+			BeanPostProcessor beanPostProcessor = (BeanPostProcessor) beanFactory.getBean(beanName);
+			log.info("register BeanPostProcessor {}", beanName);
+			beanFactory.addBeanPostProcessors(beanPostProcessor);
+		}
 	}
 
 	/**
@@ -56,5 +65,10 @@ public class ClassPathXmlApplicationContext implements ApplicationContext {
 	@Override
 	public Object getBean(String name) {
 		return beanFactory.getBean(name);
+	}
+
+	@Override
+	public <T> T getBean(Class<T> requiredType) {
+		return beanFactory.getBean(requiredType);
 	}
 }

@@ -1,4 +1,9 @@
-package org.zk.simplespring;
+package org.zk.simplespring.beans.factory.config;
+
+import org.zk.simplespring.PropertyValue;
+import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
+
+import java.util.List;
 
 public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
@@ -20,9 +25,10 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
 	/**
 	 * 依赖注入中，属性设置前调用
+	 * @param propertyValues
 	 * @param bean
 	 * @param beanName
 	 * @return
 	 */
-	void postProcessPropertyValues(Object bean, String beanName);
+	List<PropertyValue> postProcessPropertyValues(List<PropertyValue> propertyValues, Object bean, String beanName);
 }

@@ -1,9 +1,12 @@
 package org.zk.domain;
 
+import org.zk.simplespring.beans.factory.annotation.Autowired;
+
 public class User {
 
 	private int id;
 	private String username;
+	@Autowired
 	private Order order;
 
 	public int getId() {
