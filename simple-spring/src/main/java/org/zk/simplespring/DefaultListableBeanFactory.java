@@ -97,13 +97,13 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	 * @param beanDefinition
 	 */
 	private void populateBean(Object bean, BeanDefinition beanDefinition) {
-		log.info("populateBean: {}", bean);
+		log.info("populateBean {} start", bean);
 		List<PropertyValue> propertyValueList = beanDefinition.getPropertyValueList();
 		for (PropertyValue propertyValue : propertyValueList) {
 			String propertyName = propertyValue.getName();
 			Object sourceValue = propertyValue.getValue();
 			Object resolvedValue = resolveValue(sourceValue);
-			log.info("设置beanProperty: {}, property:{}, value:{}", bean, propertyName, resolvedValue);
+			log.info("设置property:{}, value:{}", bean, propertyName, resolvedValue);
 			try {
 				BeanUtils.setProperty(bean, propertyName, resolvedValue);
 			} catch (IllegalAccessException e) {
@@ -112,6 +112,7 @@ public class DefaultListableBeanFactory implements BeanFactory {
 				e.printStackTrace();
 			}
 		}
+		log.info("populateBean {} end", bean);
 	}
 
 	/**
@@ -123,6 +124,7 @@ public class DefaultListableBeanFactory implements BeanFactory {
 		if (sourceValue instanceof TypedStringValue) {
 			return ((TypedStringValue) sourceValue).getValue();
 		} else if (sourceValue instanceof RuntimeBeanReference) {
+			log.info("获取依赖bean:{}", ((RuntimeBeanReference) sourceValue).getBeanName());
 			return getBean(((RuntimeBeanReference) sourceValue).getBeanName());
 		} else {
 			throw new IllegalArgumentException("暂不支持的propery");

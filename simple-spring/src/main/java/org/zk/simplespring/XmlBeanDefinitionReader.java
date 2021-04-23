@@ -31,6 +31,7 @@ public class XmlBeanDefinitionReader {
 	}
 
 	public void loadBeanDefinition(String resource) {
+		log.info("loadBeanDefinition from classpath {}", resource);
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		InputStream inputStream = classLoader.getResourceAsStream(resource);
 
