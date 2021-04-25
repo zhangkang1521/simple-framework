@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zk.simplespring.DefaultListableBeanFactory;
 import org.zk.simplespring.XmlBeanDefinitionReader;
+import org.zk.simplespring.beans.factory.config.BeanDefinitionRegistryPostProcessor;
+import org.zk.simplespring.beans.factory.config.BeanFactoryPostProcessor;
 import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
 
 import java.util.List;
@@ -39,13 +41,23 @@ public class ClassPathXmlApplicationContext implements ApplicationContext {
 	}
 
 	/**
-	 * 调用容器后处理器
+	 * 实例化并调用容器注册后处理器，容器后处理器
 	 */
 	private void invokeBeanFactoryPostProcessors() {
+		List<String> beanNames = beanFactory.getBeanNamesForType(BeanFactoryPostProcessor.class);
+		for (String beanName : beanNames) {
+			BeanFactoryPostProcessor beanFactoryPostProcessor = (BeanFactoryPostProcessor) beanFactory.getBean(beanName);
+			if (beanFactoryPostProcessor instanceof BeanDefinitionRegistryPostProcessor) {
+				log.info("调用容器注册后处理器 {}", beanName);
+				((BeanDefinitionRegistryPostProcessor) beanFactoryPostProcessor).postProcessBeanDefinitionRegistry(beanFactory);
+			}
+			log.info("调用容器后处理器 {}", beanName);
+			beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
+		}
 	}
 
 	/**
-	 * 注册bean后置处理器
+	 * 注册bean后置处理器，调用在getBean中
 	 */
 	private void registerBeanPostProcessors() {
 		List<String> beanNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class);

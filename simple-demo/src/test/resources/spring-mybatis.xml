@@ -5,9 +5,14 @@
       <property name="configLocation" value="mybatis.xml"></property>
     </bean>
 
-    <bean id="userDao" class="org.zk.simplemybatisspring.MapperFactoryBean">
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-        <property name="mapperInterface" value="org.zk.simpledemo.dao.UserDao"></property>
+    <!--<bean id="userDao" class="org.zk.simplemybatisspring.MapperFactoryBean">-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+        <!--<property name="mapperInterface" value="org.zk.simpledemo.dao.UserDao"></property>-->
+    <!--</bean>-->
+
+    <bean id="mapperScannerConfigurer" class="org.zk.simplemybatisspring.MapperScannerConfigurer">
+        <property name="basePackage" value="org.zk.simpledemo.dao"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
 

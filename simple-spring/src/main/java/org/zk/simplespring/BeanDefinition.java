@@ -25,7 +25,8 @@ public class BeanDefinition {
 	public List<PropertyValue> getPropertyValueList() {
 		return propertyValueList;
 	}
-	public void setPropertyValueList(List<PropertyValue> propertyValueList) {
-		this.propertyValueList = propertyValueList;
+
+	public void addProperty(PropertyValue property) {
+		propertyValueList.add(property);
 	}
 }

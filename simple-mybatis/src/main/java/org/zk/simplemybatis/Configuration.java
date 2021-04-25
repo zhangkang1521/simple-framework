@@ -24,6 +24,7 @@ public class Configuration {
 
     private void initTypeHandlerMapping() {
         typeHandlerMapping.put(Integer.class, new IntegerTypeHandler());
+        typeHandlerMapping.put(int.class, new IntegerTypeHandler());
         typeHandlerMapping.put(String.class, new StringTypeHandler());
         typeHandlerMapping.put(Boolean.class, new BooleanTypeHandler());
         typeHandlerMapping.put(java.util.Date.class, new DateTypeHandler());

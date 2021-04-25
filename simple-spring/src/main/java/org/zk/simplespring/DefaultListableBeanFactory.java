@@ -62,7 +62,7 @@ public class DefaultListableBeanFactory implements BeanFactory {
 
 	private Object getObjectForBeanInstance(Object bean) {
 		if (bean instanceof FactoryBean) {
-			log.info("调用FactoryBean.getObject()返回实例");
+			log.info("调用FactoryBean: {} getObject()返回实例", bean);
 			return ((FactoryBean) bean).getObject();
 		} else {
 			return bean;
@@ -96,16 +96,11 @@ public class DefaultListableBeanFactory implements BeanFactory {
 		try {
 			Class clz = beanDefinition.resolveBeanClass();
 			Object bean =  clz.newInstance();
-			log.info("create bean:{}", beanName);
+			log.info("create bean {}", beanName);
 			return bean;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new RuntimeException("创建bean异常", e);
 		}
-		return null;
 	}
 
 	/**

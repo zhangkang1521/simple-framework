@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.zk.simplemybatis.type.TypeHandler;
 import org.zk.simplemybatis.utils.BeanUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -44,7 +45,11 @@ public class ResultSetHandler {
                 }
                 if (value != null) {
                     log.debug("设置属性：[{}]，值：[{}]", columnName, value);
-                    BeanUtils.setProperties(rowObj, columnName, value);
+                    try {
+                        org.apache.commons.beanutils.BeanUtils.setProperty(rowObj, columnName, value);
+                    } catch (Exception e) {
+                       throw new RuntimeException("ResultSetHandler setProperty error", e);
+                    }
                 }
             }
             list.add(rowObj);
