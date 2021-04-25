@@ -213,4 +213,14 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	public Map<String, BeanDefinition> getBeanDefinitionMap() {
 		return beanDefinitionMap;
 	}
+
+	/**
+	 * 初始化bean
+	 */
+	public void preInstantiateSingletons() {
+		log.info("初始化所有单例bean");
+		for (String beanName : beanDefinitionMap.keySet()) {
+			getBean(beanName);
+		}
+	}
 }
