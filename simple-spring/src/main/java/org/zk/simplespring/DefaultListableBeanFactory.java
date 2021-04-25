@@ -209,4 +209,8 @@ public class DefaultListableBeanFactory implements BeanFactory {
 		});
 		return beanNames;
 	}
+
+	public Map<String, BeanDefinition> getBeanDefinitionMap() {
+		return beanDefinitionMap;
+	}
 }

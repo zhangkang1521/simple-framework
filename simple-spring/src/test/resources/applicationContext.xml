@@ -3,15 +3,17 @@
 
     <bean id="user" class="org.zk.domain.User">
         <property name="id" value="100"/>
-        <property name="username" value="zk"/>
+        <property name="username" value="${username}"/>
         <!--<property name="order" ref="order"/>-->
     </bean>
 
-    <bean id="order" class="org.zk.domain.Order"></bean>
+    <!--<bean id="order" class="org.zk.domain.Order"></bean>-->
 
-    <bean id="autowiredAnnotationBeanPostProcessor" class="org.zk.simplespring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
+    <!--<bean id="autowiredAnnotationBeanPostProcessor" class="org.zk.simplespring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>-->
 
-
+    <bean id="propertyPlaceholderConfigurer" class="org.zk.simplespring.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="app.properties"/>
+    </bean>
 
     <!--<bean id="user" class="org.zk.domain.UserFactory"></bean>-->
 
