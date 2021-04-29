@@ -1,5 +1,7 @@
 package org.zk.simplespring;
 
+import org.zk.simplespring.util.ClassUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +9,11 @@ public class BeanDefinition {
 	private Object beanClass; // String或者类
 	private List<PropertyValue> propertyValueList = new ArrayList<>();
 
-	public Class<?> resolveBeanClass() throws ClassNotFoundException {
+	public Class<?> resolveBeanClass()  {
 		if (beanClass instanceof Class) {
 			return (Class)beanClass;
 		}
-		return Class.forName((String)beanClass);
+		return ClassUtils.forName((String)beanClass);
 	}
 
 	public Object getBeanClass() {

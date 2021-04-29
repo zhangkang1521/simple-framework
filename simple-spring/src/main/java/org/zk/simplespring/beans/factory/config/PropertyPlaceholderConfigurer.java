@@ -6,9 +6,8 @@ import org.zk.simplespring.BeanDefinition;
 import org.zk.simplespring.DefaultListableBeanFactory;
 import org.zk.simplespring.PropertyValue;
 import org.zk.simplespring.TypedStringValue;
+import org.zk.simplespring.core.io.support.PropertiesLoaderUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -34,12 +33,7 @@ public class PropertyPlaceholderConfigurer implements BeanFactoryPostProcessor {
 	}
 
 	private void loadProperties() {
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
-		try {
-			properties.load(inputStream);
-		} catch (IOException e) {
-			throw new RuntimeException("加载配置文件错误", e);
-		}
+		properties = PropertiesLoaderUtils.loadProperties(location);
 	}
 
 	private void processProperties(DefaultListableBeanFactory beanFactory) {

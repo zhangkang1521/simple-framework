@@ -5,6 +5,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zk.simplespring.beans.factory.BeanFactoryAware;
+import org.zk.simplespring.beans.factory.SpringBeanUtils;
 import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
 import org.zk.simplespring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 
@@ -41,20 +42,14 @@ public class DefaultListableBeanFactory implements BeanFactory {
 			return sharedInstance;
 		}
 		BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
-		try {
-			// 创建bean
-			Object bean = createBeanInstance(beanName, beanDefinition);
-			// 依赖注入
-			populateBean(beanName, bean, beanDefinition);
-			// 初始化
-			initializeBean(beanName, bean, beanDefinition);
-			addSingleton(beanName, bean);
-			bean = getObjectForBeanInstance(bean);
-			return bean;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		// 创建bean
+		Object bean = createBeanInstance(beanName, beanDefinition);
+		// 依赖注入
+		populateBean(beanName, bean, beanDefinition);
+		// 初始化
+		initializeBean(beanName, bean, beanDefinition);
+		addSingleton(beanName, bean);
+		return getObjectForBeanInstance(bean);
 	}
 
 
@@ -93,14 +88,9 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	 * @return
 	 */
 	private Object createBeanInstance(String beanName, BeanDefinition beanDefinition) {
-		try {
-			Class clz = beanDefinition.resolveBeanClass();
-			Object bean =  clz.newInstance();
-			log.info("create bean {}", beanName);
-			return bean;
-		} catch (Exception e) {
-			throw new RuntimeException("创建bean异常", e);
-		}
+		log.info("create bean instance {}", beanName);
+		Class clz = beanDefinition.resolveBeanClass();
+		return SpringBeanUtils.instantiateClass(clz);
 	}
 
 	/**
@@ -160,10 +150,8 @@ public class DefaultListableBeanFactory implements BeanFactory {
 			log.debug("[{}] set property [{}], value [{}]", beanName, propertyName, resolvedValue);
 			try {
 				BeanUtils.setProperty(bean, propertyName, resolvedValue);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+			} catch (IllegalAccessException | InvocationTargetException e) {
+				throw new RuntimeException("bean set property exception", e);
 			}
 		}
 	}
@@ -198,13 +186,9 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	public List<String> getBeanNamesForType(Class<?> type) {
 		List<String> beanNames = new ArrayList<>();
 		this.beanDefinitionMap.forEach((beanName, beanDefinition) -> {
-			try {
-				Class<?> clz = beanDefinition.resolveBeanClass();
-				if(type.isAssignableFrom(clz)) {
-					beanNames.add(beanName);
-				}
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+			Class<?> clz = beanDefinition.resolveBeanClass();
+			if(type.isAssignableFrom(clz)) {
+				beanNames.add(beanName);
 			}
 		});
 		return beanNames;

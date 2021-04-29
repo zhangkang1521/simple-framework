@@ -40,7 +40,7 @@ public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareB
 					field.set(bean, dependency);
 					log.debug("Autowired bean [{}] set property [{}] value [{}]", beanName, field.getName(), dependency);
 				} catch (IllegalAccessException e) {
-					e.printStackTrace();
+					throw new RuntimeException("autowired set field exception", e);
 				}
 			}
 		}

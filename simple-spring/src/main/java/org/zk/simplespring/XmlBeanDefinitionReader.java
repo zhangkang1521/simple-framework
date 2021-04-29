@@ -9,7 +9,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.zk.simplespring.beans.factory.xml.DefaultNamespaceHandlerResolver;
 import org.zk.simplespring.beans.factory.xml.NamespaceHandler;
+import org.zk.simplespring.beans.factory.xml.NamespaceHandlerResolver;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,8 +32,11 @@ public class XmlBeanDefinitionReader {
 
 	private DefaultListableBeanFactory defaultListableBeanFactory;
 
+	private NamespaceHandlerResolver namespaceHandlerResolver;
+
 	public XmlBeanDefinitionReader(DefaultListableBeanFactory defaultListableBeanFactory) {
 		this.defaultListableBeanFactory = defaultListableBeanFactory;
+		namespaceHandlerResolver = new DefaultNamespaceHandlerResolver();
 	}
 
 	public void loadBeanDefinition(String resource) {
@@ -92,26 +97,8 @@ public class XmlBeanDefinitionReader {
 	private void parseCustomElement(Element node) {
 		String namespace = node.getNamespaceURI();
 		log.info("解析自定义标签namespace {}", namespace);
-		Properties properties = new Properties();
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/spring.handlers");
-		try {
-			properties.load(inputStream);
-		} catch (IOException e) {
-			throw new RuntimeException("加载配置文件错误", e);
-		}
-		String className = (String)properties.get(namespace);
-		try {
-			Class namespaceHandlerClz = Class.forName(className);
-			NamespaceHandler namespaceHandler = (NamespaceHandler)namespaceHandlerClz.newInstance();
-			namespaceHandler.init();
-			namespaceHandler.parse(node, defaultListableBeanFactory);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("can not found class " + className, e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		}
+		NamespaceHandler namespaceHandler = this.namespaceHandlerResolver.resolve(namespace);
+		namespaceHandler.parse(node, defaultListableBeanFactory);
 	}
 
 

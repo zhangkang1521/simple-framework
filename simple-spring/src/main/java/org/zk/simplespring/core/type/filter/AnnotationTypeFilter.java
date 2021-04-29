@@ -4,7 +4,7 @@ import org.zk.simplespring.BeanDefinition;
 
 import java.lang.annotation.Annotation;
 
-public class AnnotationTypeFilter implements TypeFilter{
+public class AnnotationTypeFilter implements TypeFilter {
 
 	private final Class<? extends Annotation> annotationType;
 
@@ -14,18 +14,15 @@ public class AnnotationTypeFilter implements TypeFilter{
 
 	@Override
 	public boolean match(BeanDefinition beanDefinition) {
-		try {
-			Class<?> clz = beanDefinition.resolveBeanClass();
-			if (isAnnotationWithComponent(clz))
-				return true;
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
+		Class<?> clz = beanDefinition.resolveBeanClass();
+		if (isAnnotationWithComponent(clz))
+			return true;
 		return false;
 	}
 
 	/**
 	 * 判断class上是否有指定注解，包含组合注解的情况
+	 *
 	 * @param clz
 	 * @return
 	 */
