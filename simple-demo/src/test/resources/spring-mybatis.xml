@@ -5,6 +5,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:component-scan base-package="org.zk.simpledemo.service"/>
+
+    <bean id="autowiredAnnotationBeanPostProcessor" class="org.zk.simplespring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
+
     <bean id="sqlSessionFactory" class="org.zk.simplemybatisspring.SqlSessionFactoryBean">
       <property name="configLocation" value="mybatis.xml"></property>
     </bean>

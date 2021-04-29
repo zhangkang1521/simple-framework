@@ -39,12 +39,13 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	}
 
 	@Override
-	public Object getBean(String beanName) {
+	public Object getBean(String name) {
+		String beanName = transformBeanName(name);
 		log.info("getBean {}", beanName);
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null) {
 			log.info("返回缓存中的实例 {}", sharedInstance);
-			sharedInstance = getObjectForBeanInstance(sharedInstance);
+			sharedInstance = getObjectForBeanInstance(name, beanName, sharedInstance);
 			return sharedInstance;
 		}
 		BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
@@ -55,19 +56,37 @@ public class DefaultListableBeanFactory implements BeanFactory {
 		// 初始化
 		initializeBean(beanName, bean, beanDefinition);
 		addSingleton(beanName, bean);
-		return getObjectForBeanInstance(bean);
+		return getObjectForBeanInstance(name, beanName, bean);
+	}
+
+	/**
+	 * 如果带有&前缀则去除
+	 * @param name
+	 * @return
+	 */
+	private String transformBeanName(String name) {
+		if (isFactoryBeanReference(name)) {
+			return name.substring(1);
+		}
+		return name;
 	}
 
 
-
-
-	private Object getObjectForBeanInstance(Object bean) {
+	private Object getObjectForBeanInstance(String name, String beanName, Object bean) {
 		if (bean instanceof FactoryBean) {
-			log.info("调用FactoryBean: {} getObject()返回实例", bean);
-			return ((FactoryBean) bean).getObject();
+			if (isFactoryBeanReference(name)) {
+				return bean;
+			} else {
+				log.info("调用FactoryBean: {} getObject()返回实例", bean);
+				return ((FactoryBean) bean).getObject();
+			}
 		} else {
 			return bean;
 		}
+	}
+
+	private boolean isFactoryBeanReference(String beanName) {
+		return beanName != null && beanName.startsWith(BeanFactory.FACTORY_BEAN_PREFIX);
 	}
 
 	/**
@@ -193,7 +212,11 @@ public class DefaultListableBeanFactory implements BeanFactory {
 		List<String> beanNames = new ArrayList<>();
 		this.beanDefinitionMap.forEach((beanName, beanDefinition) -> {
 			Class<?> clz = beanDefinition.resolveBeanClass();
-			if(type.isAssignableFrom(clz)) {
+			if (FactoryBean.class.isAssignableFrom(clz)) {
+				FactoryBean factoryBean = (FactoryBean) getBean(BeanFactory.FACTORY_BEAN_PREFIX + beanName);
+				clz = factoryBean.getObjectType();
+			}
+			if (type.isAssignableFrom(clz)) {
 				beanNames.add(beanName);
 			}
 		});

@@ -7,4 +7,9 @@ public class UserFactory implements FactoryBean<User> {
 	public User getObject() {
 		return new User();
 	}
+
+	@Override
+	public Class<?> getObjectType() {
+		return User.class;
+	}
 }

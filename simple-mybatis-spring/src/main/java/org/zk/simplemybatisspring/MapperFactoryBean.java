@@ -15,6 +15,10 @@ public class MapperFactoryBean<T> implements FactoryBean<T> {
 		return sqlSession.getMapper(mapperInterface);
 	}
 
+	public Class<?> getObjectType() {
+		return mapperInterface;
+	}
+
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		this.sqlSessionFactory = sqlSessionFactory;
 		sqlSession = sqlSessionFactory.openSession();

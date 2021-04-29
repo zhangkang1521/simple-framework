@@ -35,6 +35,7 @@ public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareB
 			if (ann != null) {
 				field.setAccessible(true);
 				log.debug("resolve [{}] dependency field [{}]", beanName, field.getName());
+				//TODO FactoryBean这种有问题
 				Object dependency = beanFactory.getBean(field.getType());
 				try {
 					field.set(bean, dependency);

@@ -17,6 +17,10 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory> {
 		return new SqlSessionFactoryBuilder().build(inputStream);
 	}
 
+	public Class<?> getObjectType() {
+		return SqlSessionFactory.class;
+	}
+
 	public void setConfigLocation(String configLocation) {
 		this.configLocation = configLocation;
 	}

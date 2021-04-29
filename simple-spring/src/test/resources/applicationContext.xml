@@ -5,23 +5,23 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="user" class="org.zk.domain.User">
-        <property name="id" value="100"/>
-        <property name="username" value="zk"/>
-        <!--<property name="order" ref="order"/>-->
-    </bean>
+    <!--<bean id="user" class="org.zk.domain.User">-->
+        <!--<property name="id" value="100"/>-->
+        <!--<property name="username" value="zk"/>-->
+        <!--&lt;!&ndash;<property name="order" ref="order"/>&ndash;&gt;-->
+    <!--</bean>-->
 
-    <context:component-scan base-package="org.zk.service"></context:component-scan>
+    <!--<context:component-scan base-package="org.zk.service"></context:component-scan>-->
 
     <!--<bean id="order" class="org.zk.domain.Order"></bean>-->
 
-    <bean id="autowiredAnnotationBeanPostProcessor" class="org.zk.simplespring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
+    <!--<bean id="autowiredAnnotationBeanPostProcessor" class="org.zk.simplespring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>-->
 
     <!--<bean id="propertyPlaceholderConfigurer" class="org.zk.simplespring.beans.factory.config.PropertyPlaceholderConfigurer">-->
         <!--<property name="location" value="app.properties"/>-->
     <!--</bean>-->
 
-    <!--<bean id="user" class="org.zk.domain.UserFactory"></bean>-->
+    <bean id="user" class="org.zk.domain.UserFactory"></bean>
 
 </beans>
 
