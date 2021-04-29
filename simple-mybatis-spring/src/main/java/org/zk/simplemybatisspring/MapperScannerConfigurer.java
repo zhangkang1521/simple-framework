@@ -13,9 +13,8 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
 
 	@Override
 	public void postProcessBeanDefinitionRegistry(DefaultListableBeanFactory beanFactory) {
-		ClassPathMapperScanner scanner = new ClassPathMapperScanner();
+		ClassPathMapperScanner scanner = new ClassPathMapperScanner(beanFactory);
 		scanner.setSqlSessionFactoryBeanName(sqlSessionFactoryBeanName);
-		scanner.setDefaultListableBeanFactory(beanFactory);
 		scanner.scan(basePackage);
 	}
 

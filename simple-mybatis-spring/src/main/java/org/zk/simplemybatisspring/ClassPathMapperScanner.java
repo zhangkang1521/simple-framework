@@ -1,10 +1,6 @@
 package org.zk.simplemybatisspring;
 
-import org.zk.simplemybatis.SqlSessionFactory;
-import org.zk.simplespring.BeanDefinition;
-import org.zk.simplespring.PropertyValue;
-import org.zk.simplespring.RuntimeBeanReference;
-import org.zk.simplespring.TypedStringValue;
+import org.zk.simplespring.*;
 import org.zk.simplespring.context.annotation.ClassPathBeanDefinitionScanner;
 
 import java.util.List;
@@ -12,6 +8,10 @@ import java.util.List;
 public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
 	private String sqlSessionFactoryBeanName;
+
+	public ClassPathMapperScanner(DefaultListableBeanFactory defaultListableBeanFactory) {
+		super(defaultListableBeanFactory, false);
+	}
 
 	// 覆盖父类方法，对BeanDefinition做进一步处理，满足mybatis需要
 	public List<BeanDefinition> scan(String basePackage) {

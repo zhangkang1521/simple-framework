@@ -9,8 +9,8 @@ public class ClassPathBeanDefinitionScannerTest {
 
 	@Test
 	public void scan() {
-		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner();
-		scanner.setDefaultListableBeanFactory(new DefaultListableBeanFactory());
-		scanner.scan("org.zk.dao");
+		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(new DefaultListableBeanFactory(), true);
+		scanner.scan("org.zk.service");
+		System.out.println(scanner);
 	}
 }

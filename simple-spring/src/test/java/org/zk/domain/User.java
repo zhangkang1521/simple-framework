@@ -6,7 +6,7 @@ public class User {
 
 	private int id;
 	private String username;
-	@Autowired
+//	@Autowired
 	private Order order;
 
 	public int getId() {

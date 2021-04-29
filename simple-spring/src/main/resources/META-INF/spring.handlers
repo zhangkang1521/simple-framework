@@ -1,0 +1,1 @@
+http\://www.springframework.org/schema/context=org.zk.simplespring.context.config.ContextNamespaceHandler
