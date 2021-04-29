@@ -1,4 +1,4 @@
-package org.zk.simplespring;
+package org.zk.simplespring.beans;
 
 public class PropertyValue {
 	private final String name;

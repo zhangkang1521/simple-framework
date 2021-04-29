@@ -3,11 +3,9 @@ package org.zk.simplespring.context.annotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
-import org.zk.simplespring.BeanDefinition;
-import org.zk.simplespring.DefaultListableBeanFactory;
+import org.zk.simplespring.beans.factory.config.BeanDefinition;
+import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.beans.factory.xml.BeanDefinitionParser;
-
-import java.util.List;
 
 public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 

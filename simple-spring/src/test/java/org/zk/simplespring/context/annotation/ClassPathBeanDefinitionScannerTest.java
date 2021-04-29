@@ -1,9 +1,7 @@
 package org.zk.simplespring.context.annotation;
 
 import org.junit.Test;
-import org.zk.simplespring.DefaultListableBeanFactory;
-
-import static org.junit.Assert.*;
+import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 
 public class ClassPathBeanDefinitionScannerTest {
 

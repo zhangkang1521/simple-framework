@@ -4,8 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.zk.simpledemo.domain.User;
-import org.zk.simplespring.BeanFactory;
-import org.zk.simplespring.XmlBeanFactory;
+import org.zk.simplespring.beans.factory.BeanFactory;
+import org.zk.simplespring.beans.factory.xml.XmlBeanFactory;
 
 /**
  * Unit test for simple App.

@@ -2,7 +2,7 @@ package org.zk.simplemybatisspring;
 
 import org.zk.simplemybatis.SqlSession;
 import org.zk.simplemybatis.SqlSessionFactory;
-import org.zk.simplespring.FactoryBean;
+import org.zk.simplespring.beans.factory.FactoryBean;
 
 public class MapperFactoryBean<T> implements FactoryBean<T> {
 

@@ -1,6 +1,6 @@
 package org.zk.simplespring.beans.factory.config;
 
-import org.zk.simplespring.PropertyValue;
+import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
 
 import java.util.List;

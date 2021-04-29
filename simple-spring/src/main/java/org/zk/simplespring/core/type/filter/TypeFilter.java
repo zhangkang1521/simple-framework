@@ -1,6 +1,6 @@
 package org.zk.simplespring.core.type.filter;
 
-import org.zk.simplespring.BeanDefinition;
+import org.zk.simplespring.beans.factory.config.BeanDefinition;
 
 public interface TypeFilter {
 

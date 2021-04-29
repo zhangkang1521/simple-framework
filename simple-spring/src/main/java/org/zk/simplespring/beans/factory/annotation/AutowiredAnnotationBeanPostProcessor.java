@@ -2,8 +2,8 @@ package org.zk.simplespring.beans.factory.annotation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.zk.simplespring.BeanFactory;
-import org.zk.simplespring.PropertyValue;
+import org.zk.simplespring.beans.PropertyValue;
+import org.zk.simplespring.beans.factory.BeanFactory;
 import org.zk.simplespring.beans.factory.BeanFactoryAware;
 import org.zk.simplespring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 

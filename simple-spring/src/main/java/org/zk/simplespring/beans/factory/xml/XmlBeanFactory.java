@@ -1,4 +1,6 @@
-package org.zk.simplespring;
+package org.zk.simplespring.beans.factory.xml;
+
+import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 
 public class XmlBeanFactory extends DefaultListableBeanFactory {
 

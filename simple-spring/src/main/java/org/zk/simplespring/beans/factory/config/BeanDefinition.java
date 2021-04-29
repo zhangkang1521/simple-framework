@@ -1,5 +1,6 @@
-package org.zk.simplespring;
+package org.zk.simplespring.beans.factory.config;
 
+import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.util.ClassUtils;
 
 import java.util.ArrayList;

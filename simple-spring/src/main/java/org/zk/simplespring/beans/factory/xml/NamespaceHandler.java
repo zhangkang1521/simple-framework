@@ -1,8 +1,8 @@
 package org.zk.simplespring.beans.factory.xml;
 
 import org.w3c.dom.Element;
-import org.zk.simplespring.BeanDefinition;
-import org.zk.simplespring.DefaultListableBeanFactory;
+import org.zk.simplespring.beans.factory.config.BeanDefinition;
+import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 
 public interface NamespaceHandler {
 

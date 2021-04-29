@@ -1,6 +1,6 @@
 package org.zk.simplemybatisspring;
 
-import org.zk.simplespring.DefaultListableBeanFactory;
+import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.beans.factory.config.BeanDefinitionRegistryPostProcessor;
 
 /**

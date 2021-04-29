@@ -1,6 +1,6 @@
 package org.zk.domain;
 
-import org.zk.simplespring.FactoryBean;
+import org.zk.simplespring.beans.factory.FactoryBean;
 
 public class UserFactory implements FactoryBean<User> {
 	@Override

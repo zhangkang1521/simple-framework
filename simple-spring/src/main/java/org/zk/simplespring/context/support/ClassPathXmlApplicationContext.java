@@ -2,15 +2,13 @@ package org.zk.simplespring.context.support;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.zk.simplespring.BeanDefinition;
-import org.zk.simplespring.DefaultListableBeanFactory;
-import org.zk.simplespring.XmlBeanDefinitionReader;
+import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
+import org.zk.simplespring.beans.factory.xml.XmlBeanDefinitionReader;
 import org.zk.simplespring.beans.factory.config.BeanDefinitionRegistryPostProcessor;
 import org.zk.simplespring.beans.factory.config.BeanFactoryPostProcessor;
 import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
 
 import java.util.List;
-import java.util.Map;
 
 public class ClassPathXmlApplicationContext implements ApplicationContext {
 

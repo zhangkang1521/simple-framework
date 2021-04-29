@@ -1,4 +1,4 @@
-package org.zk.simplespring;
+package org.zk.simplespring.beans.factory;
 
 public interface BeanFactory {
 

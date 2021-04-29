@@ -1,4 +1,4 @@
-package org.zk.simplespring.beans.factory;
+package org.zk.simplespring.beans;
 
 public class SpringBeanUtils {
 

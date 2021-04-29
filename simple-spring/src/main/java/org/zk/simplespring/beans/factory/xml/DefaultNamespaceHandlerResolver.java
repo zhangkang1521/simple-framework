@@ -1,6 +1,6 @@
 package org.zk.simplespring.beans.factory.xml;
 
-import org.zk.simplespring.beans.factory.SpringBeanUtils;
+import org.zk.simplespring.beans.SpringBeanUtils;
 import org.zk.simplespring.core.io.support.PropertiesLoaderUtils;
 import org.zk.simplespring.util.ClassUtils;
 

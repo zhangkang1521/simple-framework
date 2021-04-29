@@ -1,6 +1,10 @@
 package org.zk.simplemybatisspring;
 
-import org.zk.simplespring.*;
+import org.zk.simplespring.beans.PropertyValue;
+import org.zk.simplespring.beans.factory.config.BeanDefinition;
+import org.zk.simplespring.beans.factory.config.RuntimeBeanReference;
+import org.zk.simplespring.beans.factory.config.TypedStringValue;
+import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.context.annotation.ClassPathBeanDefinitionScanner;
 
 import java.util.List;

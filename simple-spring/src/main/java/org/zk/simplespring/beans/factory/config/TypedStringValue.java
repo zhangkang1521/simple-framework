@@ -1,4 +1,4 @@
-package org.zk.simplespring;
+package org.zk.simplespring.beans.factory.config;
 
 /**
  * value属性，可能需要转换成Integer,Long等

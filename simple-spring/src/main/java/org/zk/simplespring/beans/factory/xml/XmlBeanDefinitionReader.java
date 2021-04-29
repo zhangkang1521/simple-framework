@@ -1,6 +1,5 @@
-package org.zk.simplespring;
+package org.zk.simplespring.beans.factory.xml;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -9,16 +8,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.zk.simplespring.beans.factory.xml.DefaultNamespaceHandlerResolver;
-import org.zk.simplespring.beans.factory.xml.NamespaceHandler;
-import org.zk.simplespring.beans.factory.xml.NamespaceHandlerResolver;
+import org.zk.simplespring.beans.PropertyValue;
+import org.zk.simplespring.beans.factory.config.BeanDefinition;
+import org.zk.simplespring.beans.factory.config.RuntimeBeanReference;
+import org.zk.simplespring.beans.factory.config.TypedStringValue;
+import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 
 public class XmlBeanDefinitionReader {
 

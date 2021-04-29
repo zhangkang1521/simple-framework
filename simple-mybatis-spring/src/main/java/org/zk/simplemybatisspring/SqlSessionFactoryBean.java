@@ -3,8 +3,7 @@ package org.zk.simplemybatisspring;
 import org.zk.simplemybatis.SqlSessionFactory;
 import org.zk.simplemybatis.SqlSessionFactoryBuilder;
 import org.zk.simplemybatis.io.Resources;
-import org.zk.simplespring.BeanFactory;
-import org.zk.simplespring.FactoryBean;
+import org.zk.simplespring.beans.factory.FactoryBean;
 
 import java.io.InputStream;
 

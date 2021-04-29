@@ -1,6 +1,8 @@
 package org.zk.simplespring;
 
 import org.junit.Test;
+import org.zk.simplespring.beans.factory.BeanFactory;
+import org.zk.simplespring.beans.factory.xml.XmlBeanFactory;
 
 public class XmlBeanFactoryTest {
 

@@ -2,9 +2,6 @@ package org.zk.simpledemo;
 
 import org.junit.Test;
 import org.zk.simpledemo.dao.UserDao;
-import org.zk.simpledemo.domain.User;
-import org.zk.simplespring.BeanFactory;
-import org.zk.simplespring.XmlBeanFactory;
 import org.zk.simplespring.context.support.ApplicationContext;
 import org.zk.simplespring.context.support.ClassPathXmlApplicationContext;
 

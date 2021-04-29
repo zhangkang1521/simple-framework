@@ -1,4 +1,4 @@
-package org.zk.simplespring;
+package org.zk.simplespring.beans.factory.config;
 
 /**
  * ref属性
