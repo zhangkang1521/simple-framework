@@ -25,6 +25,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
 	/**
 	 * 依赖注入中，属性设置前调用
+	 * <p>应用：@Autowired属性注入 </p>
 	 * @param propertyValues
 	 * @param bean
 	 * @param beanName

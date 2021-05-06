@@ -35,6 +35,7 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
+		log.info("注册BeanDefinition {}", beanName);
 		this.beanDefinitionMap.put(beanName, beanDefinition);
 	}
 
@@ -54,7 +55,7 @@ public class DefaultListableBeanFactory implements BeanFactory {
 		// 依赖注入
 		populateBean(beanName, bean, beanDefinition);
 		// 初始化
-		initializeBean(beanName, bean, beanDefinition);
+		bean = initializeBean(beanName, bean, beanDefinition);
 		addSingleton(beanName, bean);
 		return getObjectForBeanInstance(name, beanName, bean);
 	}
@@ -146,10 +147,44 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	 * @param bean
 	 * @param beanDefinition
 	 */
-	private void initializeBean(String name, Object bean, BeanDefinition beanDefinition) {
+	private Object initializeBean(String name, Object bean, BeanDefinition beanDefinition) {
 		log.info("初始化bean {}", name);
 		invokeAwareMethod(name, bean);
-		//TODO 前置处理 初始化方法 后置处理
+		Object wrappedBean = bean;
+		// 前置处理
+		wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, name);
+		// 初始化方法
+		invokeInitMethod(wrappedBean, name);
+		// 后置处理，可能返回bean的代理
+		wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, name);
+		return wrappedBean;
+	}
+
+
+
+	private Object applyBeanPostProcessorsBeforeInitialization(Object bean, String beanName) {
+		Object result = bean;
+		for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+			result = beanPostProcessor.postProcessBeforeInitialization(result, beanName);
+			if (result == null) {
+				return result;
+			}
+		}
+		return result;
+	}
+
+	private Object applyBeanPostProcessorsAfterInitialization(Object bean, String name) {
+		Object result = bean;
+		for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+			result = beanPostProcessor.postProcessAfterInitialization(result, name);
+			if (result == null) {
+				return result;
+			}
+		}
+		return result;
+	}
+
+	private void invokeInitMethod(Object bean, String name) {
 	}
 
 	private void invokeAwareMethod(String name, Object bean) {

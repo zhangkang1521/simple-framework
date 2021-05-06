@@ -86,7 +86,6 @@ public class XmlBeanDefinitionReader {
 		BeanDefinition beanDefinition = new BeanDefinition();
 		beanDefinition.setBeanClass(className);
 		parseProperty(node, beanDefinition);
-		log.info("register BeanDefinition {}", beanName);
 		defaultListableBeanFactory.registerBeanDefinition(beanName, beanDefinition);
 	}
 

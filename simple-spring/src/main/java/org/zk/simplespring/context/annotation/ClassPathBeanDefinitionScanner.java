@@ -50,7 +50,6 @@ public class ClassPathBeanDefinitionScanner {
 		List<BeanDefinition> beanDefinitions = findBeanDefinitions(basePackage);
 		for (BeanDefinition beanDefinition : beanDefinitions) {
 			String beanName = generateBeanName((String)beanDefinition.getBeanClass());
-			log.info("scan register beanDefinition [{}]", beanName);
 			defaultListableBeanFactory.registerBeanDefinition(beanName, beanDefinition);
 		}
 		return beanDefinitions;

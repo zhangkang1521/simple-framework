@@ -1,1 +1,2 @@
 http\://www.springframework.org/schema/context=org.zk.simplespring.context.config.ContextNamespaceHandler
+http\://www.springframework.org/schema/aop=org.zk.simplespring.aop.config.AopNamespaceHandler
