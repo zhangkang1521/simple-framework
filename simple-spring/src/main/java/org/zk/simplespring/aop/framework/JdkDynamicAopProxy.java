@@ -1,7 +1,10 @@
 package org.zk.simplespring.aop.framework;
 
+import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.zk.simplespring.aop.Advisor;
+import org.zk.simplespring.aop.aspectj.AspectJExpressionPointcut;
+import org.zk.simplespring.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -28,20 +31,41 @@ public class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
 	// 代理执行
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		List<MethodInterceptor> methodInterceptors = advisorsToMethodInterceptors(advisors);
+		List<MethodInterceptor> methodInterceptors = advisorsToMethodInterceptors(method, advisors);
 		ReflectiveMethodInvocation invocation = new ReflectiveMethodInvocation(target, method, args, methodInterceptors);
 		return invocation.proceed();
 	}
 
-	private List<MethodInterceptor> advisorsToMethodInterceptors(List<Advisor> advisors) {
+	private List<MethodInterceptor> advisorsToMethodInterceptors(Method method, List<Advisor> advisors) {
 		List<MethodInterceptor> methodInterceptors = new ArrayList<>(advisors.size());
 		for (Advisor advisor : advisors) {
 			if (advisor.getAdvice() instanceof MethodInterceptor) {
-				methodInterceptors.add((MethodInterceptor) advisor.getAdvice());
+				if (match(method, advisor)) {
+					methodInterceptors.add((MethodInterceptor) advisor.getAdvice());
+				}
 			} else {
 				throw new RuntimeException("unSupport Advise " + advisor.getAdvice().getClass());
 			}
 		}
 		return methodInterceptors;
+	}
+
+	/**
+	 * 判断指定方法是否需要代理
+	 * @param method
+	 * @param advisor
+	 * @return
+	 */
+	private boolean match(Method method, Advisor advisor) {
+		String expression = ((InstantiationModelAwarePointcutAdvisorImpl)advisor).getExpression();
+		AspectJExpressionPointcut aspectJExpressionPointcut = new AspectJExpressionPointcut();
+		aspectJExpressionPointcut.setExpression(expression);
+		aspectJExpressionPointcut.buildPointcutExpression();
+		// 接口方法
+		if(aspectJExpressionPointcut.matches(method, target.getClass())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

@@ -15,29 +15,22 @@ public class MyAspect {
 
     public static final Logger log = LoggerFactory.getLogger(MyAspect.class);
 
-    @Pointcut("execution(public * org.zk.aop.MyTarget.sayH*())")
+//    @Pointcut("execution(public * org.zk.aop.MyTarget.sayH*())")
 //    @Pointcut("@annotation(org.zk.aop.DynamicDataSource)")
     public void pointCut1() {
 
     }
 
-    @Before("pointCut1()")
+    @Before("execution(String org.zk.aop.Target.sayHello(String))")
     public void before() {
         log.info("=== before ===");
     }
 
-    @After("pointCut1()")
+    @After("execution(String org.zk.aop.Target.xx(String))")
     public void after() {
         log.info("=== after ===");
     }
 
-//    @Around("pointCut1()")
-//    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-//        log.info("=== around start ===");
-//        Object result = joinPoint.proceed();
-//        log.info("=== around end ===");
-//        return result;
-//    }
 
 
 }

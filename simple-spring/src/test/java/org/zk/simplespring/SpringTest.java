@@ -38,6 +38,7 @@ public class SpringTest {
 	public void testAop() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 		Target target = (Target)applicationContext.getBean("target");
+//		target.sayWorld("zk");
 		target.sayHello("zk");
 	}
 

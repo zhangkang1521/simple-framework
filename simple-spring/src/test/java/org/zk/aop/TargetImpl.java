@@ -12,4 +12,10 @@ public class TargetImpl implements Target {
 		log.info("invoke sayHello, arg:{}", msg);
 		return "hello," + msg;
 	}
+
+	@Override
+	public String sayWorld(String msg) {
+		log.info("invoke sayWorld, arg:{}", msg);
+		return "world," + msg;
+	}
 }
