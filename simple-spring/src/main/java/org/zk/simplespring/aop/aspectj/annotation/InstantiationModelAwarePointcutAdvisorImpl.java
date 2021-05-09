@@ -4,17 +4,22 @@ import org.aopalliance.aop.Advice;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Before;
 import org.zk.simplespring.aop.Advisor;
+import org.zk.simplespring.aop.Pointcut;
+import org.zk.simplespring.aop.PointcutAdvisor;
 import org.zk.simplespring.aop.aspectj.AspectJAfterAdvice;
 import org.zk.simplespring.aop.aspectj.AspectJBeforeAdvice;
+import org.zk.simplespring.aop.aspectj.AspectJExpressionPointcut;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-public class InstantiationModelAwarePointcutAdvisorImpl implements Advisor {
+public class InstantiationModelAwarePointcutAdvisorImpl implements PointcutAdvisor {
 
 	private Annotation annotation;
 	private String expression;
+	private AspectJExpressionPointcut aspectJExpressionPointcut;
 	private Advice instantiatedAdvice;
+
 
 	public InstantiationModelAwarePointcutAdvisorImpl(Annotation annotation, Method method, Object aspectInstance) {
 		this.annotation = annotation;
@@ -25,6 +30,8 @@ public class InstantiationModelAwarePointcutAdvisorImpl implements Advisor {
 			expression = ((After) annotation).value();
 			instantiatedAdvice = new AspectJAfterAdvice(method, aspectInstance);
 		}
+		aspectJExpressionPointcut = new AspectJExpressionPointcut();
+		aspectJExpressionPointcut.setExpression(expression);
 	}
 
 	@Override
@@ -36,13 +43,14 @@ public class InstantiationModelAwarePointcutAdvisorImpl implements Advisor {
 		return annotation;
 	}
 
-	public String getExpression() {
-		return expression;
-	}
-
 
 	@Override
 	public String toString() {
 		return "InstantiationModelAwarePointcutAdvisorImpl(" + instantiatedAdvice + ")";
+	}
+
+	@Override
+	public Pointcut getPointcut() {
+		return aspectJExpressionPointcut;
 	}
 }
