@@ -21,7 +21,7 @@ public class SpringMybatisTest {
 	@Test
 	public void testService() {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-mybatis.xml");
-		UserService userService = (UserService)ctx.getBean("userService");
+		UserService userService = (UserService)ctx.getBean("userServiceImpl");
 		List userList = userService.findAll();
 		System.out.println(userList);
 	}

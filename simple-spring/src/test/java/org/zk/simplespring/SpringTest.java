@@ -42,4 +42,11 @@ public class SpringTest {
 		target.sayHello("zk");
 	}
 
+	@Test
+	public void testTx() {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+		UserService userService = (UserService) applicationContext.getBean("userService");
+		userService.findUserList();
+	}
+
 }

@@ -1,5 +1,6 @@
 package org.zk.simplespring.aop.framework.autoproxy;
 
+import org.aopalliance.aop.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zk.simplespring.aop.Advisor;
@@ -47,8 +48,7 @@ public abstract class AbstractAdvisorAutoProxyCreator implements BeanPostProcess
 	 * @return
 	 */
 	private List<Advisor> getAdvicesAndAdvisorsForBean(Class<?> aClass, String beanName) {
-		// 本身是拦截器，无需增强
-		if (isAdvisor(aClass)) {
+		if (isInfrastructureClass(aClass)) {
 			return Collections.emptyList();
 		}
 		List<Advisor> advisors = findCandidateAdvisor();
@@ -56,8 +56,13 @@ public abstract class AbstractAdvisorAutoProxyCreator implements BeanPostProcess
 		return advisors;
 	}
 
-	protected boolean isAdvisor(Class<?> aClass) {
-		if (Advisor.class.isAssignableFrom(aClass)) {
+	/**
+	 * 框架内部使用的类，无需增强
+	 * @param aClass
+	 * @return
+	 */
+	protected boolean isInfrastructureClass(Class<?> aClass) {
+		if (Advisor.class.isAssignableFrom(aClass) || Advice.class.isAssignableFrom(aClass)) {
 			return true;
 		}
 		return false;
@@ -68,8 +73,12 @@ public abstract class AbstractAdvisorAutoProxyCreator implements BeanPostProcess
 	 * @return
 	 */
 	protected List<Advisor> findCandidateAdvisor() {
-		// TODO 找实现Advisor接口的bean
-		return new ArrayList<>();
+		List<Advisor> advisors = new ArrayList<>();
+		List<String> advisorBeanNames = beanFactory.getBeanNamesForType(Advisor.class);
+		for (String advisorBeanName : advisorBeanNames) {
+			advisors.add((Advisor) beanFactory.getBean(advisorBeanName));
+		}
+		return advisors;
 	}
 
 	/**

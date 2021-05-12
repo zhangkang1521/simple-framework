@@ -1,15 +1,12 @@
 package org.zk.service;
 
-import org.zk.simplespring.beans.factory.annotation.Autowired;
-import org.zk.simplespring.stereotype.Service;
+import org.zk.domain.User;
+import org.zk.simplespring.transaction.annotation.Transactional;
 
-@Service
-public class UserService {
+import java.util.List;
 
-	@Autowired
-	UserComponent userComponent;
+public interface UserService {
 
-	public void sayHello() {
-		System.out.println(userComponent);
-	}
+	@Transactional
+	List<User> findUserList();
 }
