@@ -11,6 +11,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ResultSetHandler {
@@ -29,6 +30,8 @@ public class ResultSetHandler {
         log.info("开始处理结果集");
         List list = new ArrayList();
         ResultSet rs = stmt.getResultSet();
+        if (rs == null)
+            return Collections.emptyList();
         Class resultType = mappedStatement.getResultType();
         log.info("需要映射到类型：{}", resultType);
         ResultSetMetaData metaData = rs.getMetaData();

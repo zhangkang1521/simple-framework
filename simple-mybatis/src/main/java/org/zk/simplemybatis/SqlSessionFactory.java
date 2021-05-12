@@ -2,6 +2,9 @@ package org.zk.simplemybatis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zk.simplemybatis.mapping.Environment;
+import org.zk.simplemybatis.transaction.Transaction;
+import org.zk.simplemybatis.transaction.TransactionFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,14 +21,10 @@ public class SqlSessionFactory {
     }
 
     public SqlSession openSession() {
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zk", "root", "123456");
-            log.info("获取数据库连接成功");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        Executor executor = configuration.newExecutor(connection);
+        Environment environment = configuration.getEnvironment();
+        TransactionFactory transactionFactory = environment.getTransactionFactory();
+        Transaction transaction = transactionFactory.newTransaction(environment.getDataSource());
+        Executor executor = configuration.newExecutor(transaction);
         return new SqlSession(configuration, executor);
     }
 }

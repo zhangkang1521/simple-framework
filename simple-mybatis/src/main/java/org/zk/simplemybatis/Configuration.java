@@ -2,6 +2,8 @@ package org.zk.simplemybatis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zk.simplemybatis.mapping.Environment;
+import org.zk.simplemybatis.transaction.Transaction;
 import org.zk.simplemybatis.type.*;
 
 import java.sql.Connection;
@@ -14,6 +16,8 @@ import java.util.Map;
 public class Configuration {
 
     public static final Logger log = LoggerFactory.getLogger(Configuration.class);
+
+    protected Environment environment;
 
     private Map<Class, TypeHandler> typeHandlerMapping = new HashMap<>();
     private Map<String, MappedStatement> mappedStatements = new HashMap<>();
@@ -43,8 +47,8 @@ public class Configuration {
         return mappedStatements.get(mappedStatementId);
     }
 
-    public Executor newExecutor(Connection connection) {
-        return new Executor(connection, this);
+    public Executor newExecutor(Transaction transaction) {
+        return new Executor(transaction, this);
     }
 
     public StatementHandler newStatementHandler(MappedStatement mappedStatement) {
@@ -53,5 +57,13 @@ public class Configuration {
 
     public ResultSetHandler newResultSetHandler(MappedStatement mappedStatement) {
         return new ResultSetHandler(mappedStatement, this);
+    }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    public Environment getEnvironment() {
+        return environment;
     }
 }

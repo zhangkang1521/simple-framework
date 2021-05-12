@@ -44,7 +44,7 @@ public class SqlSessionTest {
     }
 
     @Test
-    public void testSelectList() {
+    public void testIbatis() {
         List<User> list = sqlSession.selectList("org.zk.test.dao.UserDao.findAll", null);
     }
 
@@ -53,9 +53,8 @@ public class SqlSessionTest {
         UserDao userDao = sqlSession.getMapper(UserDao.class);
         List<User> userList = userDao.findAll();
         System.out.println(userList);
-//        Assert.assertEquals(2, userList.size());
-//        Assert.assertEquals("zk", userList.get(0).getUsername());
     }
+
 
 
 }

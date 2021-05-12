@@ -2,7 +2,7 @@
 <mapper namespace="org.zk.test.dao.UserDao">
 
     <select id="findAll" resultType="org.zk.test.domain.User">
-        select * from tb_user
+        select * from tb_user where id = 1
     </select>
 
 </mapper>

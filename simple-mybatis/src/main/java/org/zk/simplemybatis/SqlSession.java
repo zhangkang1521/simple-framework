@@ -40,4 +40,8 @@ public class SqlSession {
     public void close() {
         executor.close();
     }
+
+    public void commit() {
+        executor.commit();
+    }
 }
