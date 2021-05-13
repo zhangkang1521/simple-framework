@@ -10,4 +10,6 @@ public interface FactoryBean<T> {
 	 * @return
 	 */
 	Class<?> getObjectType();
+
+	// TODO 是否单例，现在默认是每次都调用getObject
 }

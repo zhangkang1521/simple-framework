@@ -4,8 +4,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.sql.DataSource;
+import org.zk.simplespring.jdbc.datasource.DataSourceTransactionManager;
 
 /**
  * 事务方法拦截
@@ -14,24 +13,23 @@ public class TransactionInterceptor implements MethodInterceptor {
 
 	public static final Logger log = LoggerFactory.getLogger(TransactionInterceptor.class);
 
-	// TODO 替换成事务管理器
-	private DataSource dataSource;
+	private DataSourceTransactionManager transactionManager;
 
 	@Override
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		log.info("获取数据库事务");
+		transactionManager.getTransaction();
 		Object result = null;
 		try {
 			result = invocation.proceed();
-		} catch (Exception e) {
-			log.error("回滚数据库事务", e);
-
+		} catch (Throwable e) {
+			transactionManager.rollback();
+			throw e;
 		}
-		log.info("提交数据库事务");
+		transactionManager.commit();
 		return result;
 	}
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public void setTransactionManager(DataSourceTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
 	}
 }

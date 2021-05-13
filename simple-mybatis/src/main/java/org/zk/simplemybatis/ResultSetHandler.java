@@ -27,13 +27,13 @@ public class ResultSetHandler {
     }
 
     public <E> List<E> handleResultSets(Statement stmt) throws SQLException {
-        log.info("开始处理结果集");
+        //log.debug("开始处理结果集");
         List list = new ArrayList();
         ResultSet rs = stmt.getResultSet();
         if (rs == null)
             return Collections.emptyList();
         Class resultType = mappedStatement.getResultType();
-        log.info("需要映射到类型：{}", resultType);
+        //log.debug("需要映射到类型：{}", resultType);
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
         while (rs.next()) {
@@ -47,7 +47,7 @@ public class ResultSetHandler {
                     value = typeHandler.getResult(rs, columnName);
                 }
                 if (value != null) {
-                    log.debug("设置属性：[{}]，值：[{}]", columnName, value);
+                    log.trace("设置属性：[{}]，值：[{}]", columnName, value);
                     try {
                         org.apache.commons.beanutils.BeanUtils.setProperty(rowObj, columnName, value);
                     } catch (Exception e) {

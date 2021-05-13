@@ -14,7 +14,9 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 
 	public List<User> findAll() {
+		userDao.findAll();
 		return userDao.findAll();
+//		throw new RuntimeException();
 	}
 
 }

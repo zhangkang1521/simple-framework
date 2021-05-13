@@ -12,6 +12,7 @@ public class MapperFactoryBean<T> implements FactoryBean<T> {
 
 	@Override
 	public T getObject() {
+		// TODO spring框架需要缓存
 		return sqlSession.getMapper(mapperInterface);
 	}
 

@@ -24,6 +24,7 @@ public class Executor {
     public <E> List<E> query(MappedStatement ms, Object parameter) throws SQLException {
         StatementHandler statementHandler = configuration.newStatementHandler(ms);
         Connection connection = transaction.getConnection();
+        log.info("使用数据库连接 [{}]", connection);
         PreparedStatement statement = statementHandler.prepare(connection);
         statementHandler.parameterize(statement);
         return statementHandler.query(statement);

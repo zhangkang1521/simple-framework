@@ -5,6 +5,7 @@ import org.zk.simplespring.aop.aspectj.annotation.AnnotationAwareAspectJAutoProx
 import org.zk.simplespring.aop.config.AopConfigUtils;
 import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.beans.factory.config.BeanDefinition;
+import org.zk.simplespring.beans.factory.config.RuntimeBeanReference;
 import org.zk.simplespring.beans.factory.config.TypedStringValue;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.beans.factory.xml.BeanDefinitionParser;
@@ -34,6 +35,7 @@ public class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParse
 
 		BeanDefinition transactionInterceptor = new BeanDefinition();
 		transactionInterceptor.setBeanClass(TransactionInterceptor.class);
+		transactionInterceptor.addProperty(new PropertyValue("transactionManager", new RuntimeBeanReference("transactionManager")));
 		beanFactory.registerBeanDefinition(TRANSACTION_INTERCEPTOR_BEAN_NAME, transactionInterceptor);
 
 		BeanDefinition transactionAdvisor = new BeanDefinition();
