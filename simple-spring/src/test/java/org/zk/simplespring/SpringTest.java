@@ -11,12 +11,10 @@ import org.zk.simplespring.context.support.ClassPathXmlApplicationContext;
 public class SpringTest {
 
 	@Test
-	public void test1() {
+	public void testGetBean() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-		UserFactory userFactory = (UserFactory) applicationContext.getBean("&user");
-		//		UserService userService = (UserService)applicationContext.getBean("userService");
-//		userService.sayHello();
-//		System.out.println(user);
+		User user = (User) applicationContext.getBean("user");
+
 	}
 
 	@Test

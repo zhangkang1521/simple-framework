@@ -1,8 +1,9 @@
 package org.zk.domain;
 
+import org.zk.simplespring.beans.factory.InitializingBean;
 import org.zk.simplespring.beans.factory.annotation.Autowired;
 
-public class User {
+public class User implements InitializingBean {
 
 	private int id;
 	private String username;
@@ -31,5 +32,10 @@ public class User {
 
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+
+	@Override
+	public void afterPropertiesSet() {
+		System.out.println("ok");
 	}
 }

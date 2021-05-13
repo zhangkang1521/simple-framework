@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.beans.factory.FactoryBean;
+import org.zk.simplespring.beans.factory.InitializingBean;
 import org.zk.simplespring.beans.factory.config.RuntimeBeanReference;
 import org.zk.simplespring.beans.factory.config.TypedStringValue;
 import org.zk.simplespring.beans.factory.BeanFactory;
@@ -185,6 +186,9 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	}
 
 	private void invokeInitMethod(Object bean, String name) {
+		if (bean instanceof InitializingBean) {
+			((InitializingBean) bean).afterPropertiesSet();
+		}
 	}
 
 	private void invokeAwareMethod(String name, Object bean) {
