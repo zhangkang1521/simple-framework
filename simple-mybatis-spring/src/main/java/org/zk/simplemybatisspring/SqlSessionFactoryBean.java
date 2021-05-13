@@ -9,6 +9,7 @@ import org.zk.simplemybatis.io.Resources;
 import org.zk.simplemybatis.mapping.Environment;
 import org.zk.simplemybatisspring.transaction.SpringManagedTransactionFactory;
 import org.zk.simplespring.beans.factory.FactoryBean;
+import org.zk.simplespring.beans.factory.InitializingBean;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -17,7 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory> {
+public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, InitializingBean {
 
 	private String configLocation;
 
@@ -26,20 +27,26 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory> {
 	/** mapper文件目录 */
 	private String mapperLocation; // spring在依赖注入的时候会使用convert将目录下的文件全部转换成Resource注入
 
-
+	private SqlSessionFactory sqlSessionFactory;
 
 	@Override
-	public SqlSessionFactory getObject() {
+	public void afterPropertiesSet() {
 		if (this.configLocation != null) {
 			InputStream inputStream = Resources.getResourceAsStream(configLocation);
-			return new SqlSessionFactoryBuilder().build(inputStream);
+			sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		} else {
 			Configuration configuration = new Configuration();
 			Environment environment = new Environment(new SpringManagedTransactionFactory(), this.dataSource);
 			configuration.setEnvironment(environment);
 			parseMapperFiles(configuration);
-			return new SqlSessionFactory(configuration);
+			sqlSessionFactory = new SqlSessionFactory(configuration);
 		}
+	}
+
+	@Override
+	public SqlSessionFactory getObject() {
+		// 构建SqlSessionFactory放到初始化方法中，这个方法每次getBean都会调用
+		return sqlSessionFactory;
 	}
 
 	/**
@@ -80,4 +87,6 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory> {
 	public void setMapperLocation(String mapperLocation) {
 		this.mapperLocation = mapperLocation;
 	}
+
+
 }
