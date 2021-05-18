@@ -247,6 +247,18 @@ public class DefaultListableBeanFactory implements BeanFactory {
 		return (T)getBean(beanNames.get(0));
 	}
 
+	public <T> List<T> getBeanList(Class<T> requiredType) {
+		List<String> beanNames = getBeanNamesForType(requiredType);
+		if (CollectionUtils.isEmpty(beanNames)) {
+			throw new RuntimeException("没有找到bean，requiredType:" + requiredType);
+		}
+		List<T> beans = new ArrayList<>(beanNames.size());
+		for (String beanName : beanNames) {
+			beans.add((T)getBean(beanName));
+		}
+		return beans;
+	}
+
 	public List<String> getBeanNamesForType(Class<?> type) {
 		List<String> beanNames = new ArrayList<>();
 		this.beanDefinitionMap.forEach((beanName, beanDefinition) -> {

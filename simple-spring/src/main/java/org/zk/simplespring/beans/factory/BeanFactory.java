@@ -1,5 +1,7 @@
 package org.zk.simplespring.beans.factory;
 
+import java.util.List;
+
 public interface BeanFactory {
 
 
@@ -16,10 +18,18 @@ public interface BeanFactory {
 	Object getBean(String name);
 
 	/**
-	 * 按类型获取bean
+	 * 按类型获取单个bean，找到多个抛出异常
 	 * @param requiredType
 	 * @param <T>
 	 * @return
 	 */
 	<T> T getBean(Class<T> requiredType);
+
+	/**
+	 * 按类型获取多个bean
+	 * @param requiredType
+	 * @param <T>
+	 * @return
+	 */
+	<T> List<T> getBeanList(Class<T> requiredType);
 }

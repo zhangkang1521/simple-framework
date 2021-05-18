@@ -5,14 +5,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="user" class="org.zk.simpledemo.domain.User">
-        <property name="id" value="100"/>
-        <property name="username" value="zk"/>
+    <bean id="userController" class="org.zk.simpledemo.controller.SimpleController">
+
     </bean>
 
-    <!--<bean id="order" class="org.zk.domain.Order"></bean>-->
+    <bean id="simpleUrlHandlerMapping" class="org.zk.simple.spring.web.servlet.handler.SimpleUrlHandlerMapping"></bean>
 
-    <!--<bean id="user" class="org.zk.domain.UserFactory"></bean>-->
+    <bean id="internalResourceViewResolver" class="org.zk.simple.spring.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
 
 </beans>
 
