@@ -3,6 +3,7 @@ package org.zk.simple.spring.web.servlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zk.simple.spring.web.context.WebApplicationContext;
+import org.zk.simple.spring.web.method.HandlerMethod;
 import org.zk.simple.spring.web.servlet.mvc.Controller;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -36,7 +39,19 @@ public class DispatcherServlet extends HttpServlet {
 	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Object handler = getHandler(req);
 		// TODO 使用handlerAdapter
-		ModelAndView modelAndView = ((Controller)handler).handleRequest(req, resp);
+		ModelAndView modelAndView = null;
+		if (handler instanceof Controller) {
+			modelAndView = ((Controller)handler).handleRequest(req, resp);
+		} else if (handler instanceof HandlerMethod) {
+			try {
+				Object controllerInstance = ((HandlerMethod) handler).getBean();
+				Method method = ((HandlerMethod) handler).getMethod();
+				modelAndView = (ModelAndView) (method).invoke(controllerInstance, null);
+			} catch (Exception e) {
+				throw new RuntimeException("执行handler错误", e);
+			}
+		}
+
 		View view = resolveView(modelAndView.getView());
 		view.render(modelAndView.getModel(), req, resp);
 	}

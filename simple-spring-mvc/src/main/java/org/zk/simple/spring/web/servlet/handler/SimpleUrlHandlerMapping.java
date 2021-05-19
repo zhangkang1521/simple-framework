@@ -26,7 +26,10 @@ public class SimpleUrlHandlerMapping implements HandlerMapping, BeanFactoryAware
 	public Object getHandler(HttpServletRequest request) {
 		String uri = request.getRequestURI();
 		String beanName = urlMap.get(uri);
-		return beanFactory.getBean(beanName);
+		if (beanName != null)
+			return beanFactory.getBean(beanName);
+		else
+			return null;
 	}
 
 	@Override
