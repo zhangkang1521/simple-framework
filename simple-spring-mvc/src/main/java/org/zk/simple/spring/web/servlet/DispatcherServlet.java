@@ -26,6 +26,8 @@ public class DispatcherServlet extends HttpServlet {
 
 	private List<ViewResolver> viewResolvers;
 
+	private List<HandlerAdapter> handlerAdapters;
+
 
 	@Override
 	public void init() throws ServletException {
@@ -34,29 +36,21 @@ public class DispatcherServlet extends HttpServlet {
 		WebApplicationContext webApplicationContext = (WebApplicationContext) this.getServletContext().getAttribute(WebApplicationContext.WEB_APPLICATION_CONTEXT);
 		handlerMappings = webApplicationContext.getBeanList(HandlerMapping.class);
 		viewResolvers = webApplicationContext.getBeanList(ViewResolver.class);
+		handlerAdapters = webApplicationContext.getBeanList(HandlerAdapter.class);
 	}
 
 	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Object handler = getHandler(req);
-		// TODO 使用handlerAdapter
+		HandlerAdapter handlerAdapter = getHandlerAdapter(handler);
 		ModelAndView modelAndView = null;
-		if (handler instanceof Controller) {
-			modelAndView = ((Controller)handler).handleRequest(req, resp);
-		} else if (handler instanceof HandlerMethod) {
-			try {
-				Object controllerInstance = ((HandlerMethod) handler).getBean();
-				Method method = ((HandlerMethod) handler).getMethod();
-				modelAndView = (ModelAndView) (method).invoke(controllerInstance, null);
-			} catch (Exception e) {
-				throw new RuntimeException("执行handler错误", e);
-			}
+		try {
+			modelAndView = handlerAdapter.handle(req, resp, handler);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-
 		View view = resolveView(modelAndView.getView());
 		view.render(modelAndView.getModel(), req, resp);
 	}
-
-
 
 	private Object getHandler(HttpServletRequest req) {
 		for (HandlerMapping handlerMapping : handlerMappings) {
@@ -66,6 +60,15 @@ public class DispatcherServlet extends HttpServlet {
 			}
 		}
 		return null;
+	}
+
+	private HandlerAdapter getHandlerAdapter(Object handler) {
+		for (HandlerAdapter handlerAdapter : handlerAdapters) {
+			if (handlerAdapter.supports(handler)) {
+				return handlerAdapter;
+			}
+		}
+		throw new RuntimeException("没有找到合适的HandlerAdapter");
 	}
 
 	private View resolveView(String viewName) {

@@ -10,6 +10,8 @@
 
     <bean id="simpleUrlHandlerMapping" class="org.zk.simple.spring.web.servlet.handler.SimpleUrlHandlerMapping"></bean>
 
+    <bean id="simpleControllerHandlerAdapter" class="org.zk.simple.spring.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
+
     <bean id="internalResourceViewResolver" class="org.zk.simple.spring.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/view/"/>
         <property name="suffix" value=".jsp"/>
@@ -19,6 +21,7 @@
 
     <bean id="requestMappingHandlerMapping" class="org.zk.simple.spring.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"></bean>
 
+    <bean id="requestMappingHandlerAdapter" class="org.zk.simple.spring.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
 </beans>
 
 
