@@ -3,6 +3,7 @@ package org.zk.simplespring.context.annotation;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zk.simplespring.beans.SpringBeanUtils;
 import org.zk.simplespring.beans.factory.config.BeanDefinition;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.core.type.filter.AnnotationTypeFilter;
@@ -49,7 +50,7 @@ public class ClassPathBeanDefinitionScanner {
 		log.info("开始扫描{}，自动注册BeanDefinition", basePackage);
 		List<BeanDefinition> beanDefinitions = findBeanDefinitions(basePackage);
 		for (BeanDefinition beanDefinition : beanDefinitions) {
-			String beanName = generateBeanName((String)beanDefinition.getBeanClass());
+			String beanName = SpringBeanUtils.generateBeanName((String)beanDefinition.getBeanClass());
 			defaultListableBeanFactory.registerBeanDefinition(beanName, beanDefinition);
 		}
 		return beanDefinitions;
@@ -87,15 +88,7 @@ public class ClassPathBeanDefinitionScanner {
 		return true;
 	}
 
-	/**
-	 * 首字母小写
-	 * @param className
-	 * @return
-	 */
-	private String generateBeanName(String className) {
-		int pos = className.lastIndexOf(".");
-		return Introspector.decapitalize(className.substring(pos + 1));
-	}
+
 
 	public void setDefaultListableBeanFactory(DefaultListableBeanFactory defaultListableBeanFactory) {
 		this.defaultListableBeanFactory = defaultListableBeanFactory;

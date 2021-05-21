@@ -17,6 +17,7 @@ import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
 import org.zk.simplespring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -119,8 +120,18 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	 */
 	private Object createBeanInstance(String beanName, BeanDefinition beanDefinition) {
 		log.info("create bean instance {}", beanName);
-		Class clz = beanDefinition.resolveBeanClass();
-		return SpringBeanUtils.instantiateClass(clz);
+		String factoryBeanName = beanDefinition.getFactoryBeanName();
+		Method factoryMethod = beanDefinition.getFactoryMethod();
+		if (factoryBeanName != null && factoryMethod != null) {
+			try {
+				return factoryMethod.invoke(getBean(factoryBeanName));
+			} catch (Exception e) {
+				throw new RuntimeException("使用工厂方法创建bean实例异常", e);
+			}
+		} else {
+			Class clz = beanDefinition.resolveBeanClass();
+			return SpringBeanUtils.instantiateClass(clz);
+		}
 	}
 
 	/**

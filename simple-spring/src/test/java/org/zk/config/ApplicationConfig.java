@@ -1,10 +1,18 @@
 package org.zk.config;
 
-import org.zk.simplespring.context.annotation.ComponentScan;
+import org.zk.domain.User;
+import org.zk.simplespring.context.annotation.Bean;
 import org.zk.simplespring.context.annotation.Configuration;
-import org.zk.simplespring.stereotype.Component;
 
 @Configuration
-@ComponentScan("org.zk.service")
+//@ComponentScan("org.zk.service")
+//@Import(FooConfig.class)
+//@Import(DemoImportSelector.class)
+//@Import(DemoImportBeanDefinitionRegistrar.class)
 public class ApplicationConfig {
+
+	@Bean
+	public User user() {
+		return new User();
+	}
 }

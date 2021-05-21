@@ -3,12 +3,18 @@ package org.zk.simplespring.beans.factory.config;
 import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.util.ClassUtils;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BeanDefinition {
 	private Object beanClass; // String或者类
 	private List<PropertyValue> propertyValueList = new ArrayList<>();
+
+	// 如果有值，则使用工厂方法创建bean
+	private String factoryBeanName;
+	private Method factoryMethod;
+
 
 	public Class<?> resolveBeanClass()  {
 		if (beanClass instanceof Class) {
@@ -31,5 +37,21 @@ public class BeanDefinition {
 
 	public void addProperty(PropertyValue property) {
 		propertyValueList.add(property);
+	}
+
+	public String getFactoryBeanName() {
+		return factoryBeanName;
+	}
+
+	public void setFactoryBeanName(String factoryBeanName) {
+		this.factoryBeanName = factoryBeanName;
+	}
+
+	public Method getFactoryMethod() {
+		return factoryMethod;
+	}
+
+	public void setFactoryMethod(Method factoryMethod) {
+		this.factoryMethod = factoryMethod;
 	}
 }

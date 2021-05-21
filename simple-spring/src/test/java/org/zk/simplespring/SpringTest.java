@@ -50,8 +50,7 @@ public class SpringTest {
 	@Test
 	public void testXmlAnnotation() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-		UserService userService = (UserService) applicationContext.getBean("userServiceImpl");
-		userService.findUserList();
+		User userService = (User) applicationContext.getBean("user");
 	}
 
 }
