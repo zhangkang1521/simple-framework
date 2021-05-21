@@ -7,6 +7,9 @@ import org.zk.simplespring.beans.factory.config.BeanDefinition;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.beans.factory.xml.BeanDefinitionParser;
 
+/**
+ * 扫描<context:component-scan base-package="xxx"/>指定的包，注册BeanDefinition
+ */
 public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 
 	public static final Logger log = LoggerFactory.getLogger(ComponentScanBeanDefinitionParser.class);

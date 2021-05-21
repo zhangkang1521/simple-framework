@@ -51,6 +51,9 @@ public class DefaultListableBeanFactory implements BeanFactory {
 			return sharedInstance;
 		}
 		BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
+		if (beanDefinition == null) {
+			throw new RuntimeException("未找到" + beanName + "的BeanDefinition，请检查配置");
+		}
 		// 创建bean
 		Object bean = createBeanInstance(beanName, beanDefinition);
 		// 依赖注入
