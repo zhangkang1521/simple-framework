@@ -6,23 +6,17 @@ import org.zk.simplespring.beans.factory.config.BeanDefinitionRegistryPostProces
 import org.zk.simplespring.beans.factory.config.BeanFactoryPostProcessor;
 import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
-import org.zk.simplespring.beans.factory.xml.XmlBeanDefinitionReader;
 
 import java.util.List;
 
-public abstract class AbstractRefreshableApplicationContext implements ApplicationContext {
+public abstract class AbstractApplicationContext implements ApplicationContext {
 
-	private static final Logger log = LoggerFactory.getLogger(AbstractRefreshableApplicationContext.class);
+	private static final Logger log = LoggerFactory.getLogger(AbstractApplicationContext.class);
 
-	private String configLocation;
-	private DefaultListableBeanFactory beanFactory;
+	protected DefaultListableBeanFactory beanFactory;
 
-	public AbstractRefreshableApplicationContext(String configLocation) {
-		this.configLocation = configLocation;
-		refresh();
-	}
 
-	private void refresh() {
+	public void refresh() {
 		log.info("refresh");
 		obtainFreshBeanFactory();
 		invokeBeanFactoryPostProcessors();
@@ -33,11 +27,9 @@ public abstract class AbstractRefreshableApplicationContext implements Applicati
 	/**
 	 * 创建beanFactory，loadBeanDefinition
 	 */
-	private void obtainFreshBeanFactory() {
+	protected void obtainFreshBeanFactory() {
 		beanFactory = new DefaultListableBeanFactory();
 		log.info("create beanFactory {}", beanFactory);
-		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
-		reader.loadBeanDefinition(this.configLocation);
 	}
 
 	/**

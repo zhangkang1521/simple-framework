@@ -2,9 +2,11 @@ package org.zk.simplespring;
 
 import org.junit.Test;
 import org.zk.aop.Target;
+import org.zk.config.ApplicationConfig;
 import org.zk.domain.User;
 import org.zk.domain.UserFactory;
 import org.zk.service.UserService;
+import org.zk.simplespring.context.annotation.AnnotationConfigApplicationContext;
 import org.zk.simplespring.context.support.ApplicationContext;
 import org.zk.simplespring.context.support.ClassPathXmlApplicationContext;
 
@@ -51,6 +53,12 @@ public class SpringTest {
 	public void testXmlAnnotation() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 		User userService = (User) applicationContext.getBean("user");
+	}
+
+	@Test
+	public void testAnnotation() {
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+		User user = (User) applicationContext.getBean("user");
 	}
 
 }
