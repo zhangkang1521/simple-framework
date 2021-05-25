@@ -4,6 +4,8 @@ import org.zk.simple.spring.web.bind.annotation.RequestMapping;
 import org.zk.simple.spring.web.servlet.ModelAndView;
 import org.zk.simpledemo.domain.User;
 import org.zk.simpledemo.service.UserService;
+import org.zk.simplespring.beans.factory.BeanFactory;
+import org.zk.simplespring.beans.factory.BeanFactoryAware;
 import org.zk.simplespring.beans.factory.annotation.Autowired;
 import org.zk.simplespring.stereotype.Controller;
 
@@ -13,17 +15,22 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
-public class AnnotationController {
+public class AnnotationController implements BeanFactoryAware {
 
-//	@Autowired
-//	private UserService userService;
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping("/list")
 	public ModelAndView list() {
-		//List<User> userList = userService.findAll();
+		List<User> userList = userService.findAll();
 		Map<String, Object> model = new HashMap<>();
-//		model.put("username", userList.get(0).getUsername());
-		model.put("username", "zk");
+		model.put("username", userList.get(0).getUsername());
+//		model.put("username", "zk");
 		return new ModelAndView("hello", model);
+	}
+
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) {
+		System.out.println(beanFactory);
 	}
 }

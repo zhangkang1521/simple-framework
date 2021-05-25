@@ -7,5 +7,5 @@ import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
  */
 public interface ImportBeanDefinitionRegistrar {
 
-	void registerBeanDefinitions(DefaultListableBeanFactory defaultListableBeanFactory);
+	void registerBeanDefinitions(Class<?> annotationClass, DefaultListableBeanFactory defaultListableBeanFactory);
 }

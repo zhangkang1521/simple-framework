@@ -19,11 +19,13 @@ public class ComponentScanAnnotationParser {
 	}
 
 	public BeanDefinition parse(ComponentScan componentScan) {
-		String basePackage = componentScan.value();
-		log.info("开始扫描basePackage {}", basePackage);
-		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(defaultListableBeanFactory, true);
-		scanner.setDefaultListableBeanFactory(defaultListableBeanFactory);
-		scanner.scan(basePackage);
+		String[] basePackages = componentScan.value();
+		for (String basePackage : basePackages) {
+			log.info("开始扫描basePackage {}", basePackage);
+			ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(defaultListableBeanFactory, true);
+			scanner.setDefaultListableBeanFactory(defaultListableBeanFactory);
+			scanner.scan(basePackage);
+		}
 		return null;
 	}
 }

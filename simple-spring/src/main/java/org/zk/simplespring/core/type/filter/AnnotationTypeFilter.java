@@ -6,10 +6,10 @@ import java.lang.annotation.Annotation;
 
 public class AnnotationTypeFilter implements TypeFilter {
 
-	private final Class<? extends Annotation> annotationType;
+	private final Class<? extends Annotation> specficAnnotationType;
 
 	public AnnotationTypeFilter(Class<? extends Annotation> annotationType) {
-		this.annotationType = annotationType;
+		this.specficAnnotationType = annotationType;
 	}
 
 	@Override
@@ -30,12 +30,12 @@ public class AnnotationTypeFilter implements TypeFilter {
 		Annotation[] annotations = clz.getAnnotations();
 		for (Annotation annotation : annotations) {
 			Class annotationType = annotation.annotationType();
-			if (annotationType.equals(annotationType))
+			if (annotationType.equals(specficAnnotationType))
 				return true;
 			// 组合注解的情况，例如@Service包含注解@Component
 			Annotation[] metaAnnotations = annotationType.getAnnotations();
 			for (Annotation metaAnnotation : metaAnnotations) {
-				if (metaAnnotation.annotationType().equals(annotationType)) {
+				if (metaAnnotation.annotationType().equals(specficAnnotationType)) {
 					return true;
 				}
 			}

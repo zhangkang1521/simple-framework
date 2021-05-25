@@ -10,5 +10,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface ComponentScan {
 
-	String value();
+	String[] value();
 }

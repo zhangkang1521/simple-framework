@@ -2,7 +2,7 @@ package org.zk.simplespring;
 
 import org.junit.Test;
 import org.zk.aop.Target;
-import org.zk.config.ApplicationConfig;
+import org.zk.config.AppConfig;
 import org.zk.domain.User;
 import org.zk.domain.UserFactory;
 import org.zk.service.UserService;
@@ -57,7 +57,7 @@ public class SpringTest {
 
 	@Test
 	public void testAnnotation() {
-		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 		User user = (User) applicationContext.getBean("user");
 	}
 

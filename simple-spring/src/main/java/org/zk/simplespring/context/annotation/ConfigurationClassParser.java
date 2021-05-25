@@ -5,7 +5,10 @@ import org.zk.simplespring.beans.factory.config.BeanDefinition;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.util.ClassUtils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Configuration注解的类解析
@@ -29,18 +32,21 @@ class ConfigurationClassParser {
 		}
 
 		// @Import解析
-		Import _import = clz.getAnnotation(Import.class);
-		if (_import != null) {
-			Class<?> importClz = _import.value();
-			// @Import注解的3种情况
-			if (ImportSelector.class.isAssignableFrom(importClz)) {
-				ImportSelector importSelector = (ImportSelector)SpringBeanUtils.instantiateClass(importClz);
-				parse(ClassUtils.forName(importSelector.selectImport()));
-			} else if (ImportBeanDefinitionRegistrar.class.isAssignableFrom(importClz)) {
-				ImportBeanDefinitionRegistrar registrar = (ImportBeanDefinitionRegistrar)SpringBeanUtils.instantiateClass(importClz);
-				registrar.registerBeanDefinitions(defaultListableBeanFactory);
-			} else {
-				parse(importClz);
+		Set<Import> imports = new HashSet<>();
+		collectImport(clz, imports);
+		if (imports.size() > 0) {
+			for (Import _import : imports) {
+				Class<?> importClz = _import.value();
+				// @Import注解的3种情况
+				if (ImportSelector.class.isAssignableFrom(importClz)) {
+					ImportSelector importSelector = (ImportSelector) SpringBeanUtils.instantiateClass(importClz);
+					parse(ClassUtils.forName(importSelector.selectImport()));
+				} else if (ImportBeanDefinitionRegistrar.class.isAssignableFrom(importClz)) {
+					ImportBeanDefinitionRegistrar registrar = (ImportBeanDefinitionRegistrar) SpringBeanUtils.instantiateClass(importClz);
+					registrar.registerBeanDefinitions(clz, defaultListableBeanFactory);
+				} else {
+					parse(importClz);
+				}
 			}
 		}
 
@@ -61,8 +67,26 @@ class ConfigurationClassParser {
 				defaultListableBeanFactory.registerBeanDefinition(method.getName(), beanDefinition);
 			}
 		}
-
-
-
 	}
+
+	/**
+	 * 递归解析Import注解，存在@Enable类注解
+	 * @param clz
+	 * @param imports
+	 */
+	private void collectImport(Class<?> clz, Set<Import> imports) {
+		if (clz.getName().startsWith("java")) {
+			return;
+		}
+		Import _import = clz.getAnnotation(Import.class);
+		if (_import != null) {
+			imports.add(_import);
+		}
+		Annotation[] annotations = clz.getAnnotations();
+		for (Annotation annotation : annotations) {
+			Class<?> annotationType = annotation.annotationType();
+			collectImport(annotationType, imports);
+		}
+	}
+
 }
