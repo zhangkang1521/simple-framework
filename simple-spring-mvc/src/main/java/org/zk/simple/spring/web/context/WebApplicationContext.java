@@ -11,4 +11,6 @@ public interface WebApplicationContext extends ApplicationContext {
 	String WEB_APPLICATION_CONTEXT = "webApplicationContext";
 
 	ServletContext getServletContext();
+
+	void setServletContext(ServletContext servletContext);
 }

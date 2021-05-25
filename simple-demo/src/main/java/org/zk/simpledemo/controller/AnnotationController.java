@@ -15,14 +15,15 @@ import java.util.Map;
 @RequestMapping("/user")
 public class AnnotationController {
 
-	@Autowired
-	private UserService userService;
+//	@Autowired
+//	private UserService userService;
 
 	@RequestMapping("/list")
 	public ModelAndView list() {
-		List<User> userList = userService.findAll();
+		//List<User> userList = userService.findAll();
 		Map<String, Object> model = new HashMap<>();
-		model.put("username", userList.get(0).getUsername());
+//		model.put("username", userList.get(0).getUsername());
+		model.put("username", "zk");
 		return new ModelAndView("hello", model);
 	}
 }

@@ -41,6 +41,10 @@ public class DispatcherServlet extends HttpServlet {
 
 	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Object handler = getHandler(req);
+		if (handler == null) {
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
 		HandlerAdapter handlerAdapter = getHandlerAdapter(handler);
 		ModelAndView modelAndView = null;
 		try {
