@@ -33,6 +33,9 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	/** 单例bean */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>();
 
+	/** 缓存FactoryBean getObject方法返回的对象 */
+	private final Map<String, Object> factoryBeanObjectCache = new ConcurrentHashMap<>();
+
 	/** bean后置处理器 */
 	private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
@@ -43,8 +46,8 @@ public class DefaultListableBeanFactory implements BeanFactory {
 
 	@Override
 	public Object getBean(String name) {
+		log.info("getBean {}", name);
 		String beanName = transformBeanName(name);
-		log.info("getBean {}", beanName);
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null) {
 			log.info("返回缓存中的实例 {}", sharedInstance);
@@ -83,8 +86,15 @@ public class DefaultListableBeanFactory implements BeanFactory {
 			if (isFactoryBeanReference(name)) {
 				return bean;
 			} else {
-				log.info("调用FactoryBean: {} getObject()返回实例", bean);
-				return ((FactoryBean) bean).getObject();
+				if(factoryBeanObjectCache.containsKey(beanName)) {
+					log.info("返回FactoryBean缓存中的bean", bean);
+					return factoryBeanObjectCache.get(beanName);
+				} else {
+					log.info("调用FactoryBean: {} getObject()返回实例", bean);
+					Object obj = ((FactoryBean) bean).getObject();
+					factoryBeanObjectCache.put(beanName, obj);
+					return obj;
+				}
 			}
 		} else {
 			return bean;
@@ -124,6 +134,11 @@ public class DefaultListableBeanFactory implements BeanFactory {
 		Method factoryMethod = beanDefinition.getFactoryMethod();
 		if (factoryBeanName != null && factoryMethod != null) {
 			try {
+//				Class<?>[] parameterTypes = factoryMethod.getParameterTypes();
+//				Object[] resolvedDependency = new Object[parameterTypes.length];
+//				for (int i = 0; i < parameterTypes.length; i++) {
+//					resolvedDependency[i] = this.getBean(parameterTypes[i]);
+//				}
 				return factoryMethod.invoke(getBean(factoryBeanName));
 			} catch (Exception e) {
 				throw new RuntimeException("使用工厂方法创建bean实例异常", e);
@@ -278,6 +293,7 @@ public class DefaultListableBeanFactory implements BeanFactory {
 		this.beanDefinitionMap.forEach((beanName, beanDefinition) -> {
 			Class<?> clz = beanDefinition.resolveBeanClass();
 			if (FactoryBean.class.isAssignableFrom(clz)) {
+				// 存在死循环 getBean("userDao") -> getBean("sqlSessionFactory") -> getBeanNamesForType(DataSource) -> getBean("&userDao") -> getBean("sqlSessionFactory")
 				FactoryBean factoryBean = (FactoryBean) getBean(BeanFactory.FACTORY_BEAN_PREFIX + beanName);
 				clz = factoryBean.getObjectType();
 			}

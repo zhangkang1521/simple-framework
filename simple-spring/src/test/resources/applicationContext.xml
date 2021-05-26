@@ -9,11 +9,11 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/context/spring-aop.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <bean id="user" class="org.zk.domain.User">
-        <property name="id" value="100"/>
-        <property name="username" value="zk"/>
-        <!--<property name="order" ref="order"/>-->
-    </bean>
+    <!--<bean id="user" class="org.zk.domain.User">-->
+        <!--<property name="id" value="100"/>-->
+        <!--<property name="username" value="zk"/>-->
+        <!--&lt;!&ndash;<property name="order" ref="order"/>&ndash;&gt;-->
+    <!--</bean>-->
 
     <!--<bean id="ConfigurationClassPostProcessor" class="org.zk.simplespring.context.annotation.ConfigurationClassPostProcessor"></bean>-->
     <!--<bean id="applicationConfig" class="org.zk.config.ApplicationConfig"></bean>-->
@@ -28,7 +28,7 @@
         <!--<property name="location" value="app.properties"/>-->
     <!--</bean>-->
 
-    <!--<bean id="user" class="org.zk.domain.UserFactory"></bean>-->
+    <bean id="user" class="org.zk.domain.UserFactory"></bean>
 
 
     <!--<bean id="target" class="org.zk.aop.TargetImpl"></bean>-->

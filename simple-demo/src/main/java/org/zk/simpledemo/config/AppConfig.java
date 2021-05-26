@@ -4,6 +4,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import org.zk.simple.spring.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.zk.simple.spring.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.zk.simple.spring.web.servlet.view.InternalResourceViewResolver;
+import org.zk.simplemybatis.SqlSessionFactory;
 import org.zk.simplemybatisspring.SqlSessionFactoryBean;
 import org.zk.simplemybatisspring.annotation.MapperScan;
 import org.zk.simplespring.beans.factory.BeanFactory;
@@ -52,7 +53,6 @@ public class AppConfig implements BeanFactoryAware {
 	@Bean
 	public SqlSessionFactoryBean sqlSessionFactory() {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-		// TODO 参数中注入dataSource
 		sqlSessionFactoryBean.setDataSource(dataSource());
 		sqlSessionFactoryBean.setMapperLocation("mappers");
 		return sqlSessionFactoryBean;

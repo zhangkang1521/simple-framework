@@ -45,7 +45,6 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
 
 	@Override
 	public SqlSessionFactory getObject() {
-		// 构建SqlSessionFactory放到初始化方法中，这个方法每次getBean都会调用
 		return sqlSessionFactory;
 	}
 

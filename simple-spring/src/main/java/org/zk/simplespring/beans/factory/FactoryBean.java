@@ -2,6 +2,10 @@ package org.zk.simplespring.beans.factory;
 
 public interface FactoryBean<T> {
 
+	/**
+	 * 默认会缓存结果
+	 * @return
+	 */
 	T getObject();
 
 	/**
@@ -11,5 +15,4 @@ public interface FactoryBean<T> {
 	 */
 	Class<?> getObjectType();
 
-	// TODO 是否单例，现在默认是每次都调用getObject
 }
