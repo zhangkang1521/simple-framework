@@ -1,6 +1,7 @@
 package org.zk.simpledemo.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import org.zk.simple.spring.web.servlet.config.annotation.EnableWebMvc;
 import org.zk.simple.spring.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.zk.simple.spring.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.zk.simple.spring.web.servlet.view.InternalResourceViewResolver;
@@ -18,19 +19,10 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan({"org.zk.simpledemo.controller", "org.zk.simpledemo.service"})
 @MapperScan(basePackage = "org.zk.simpledemo.dao", sqlSessionFactoryRef = "sqlSessionFactory")
+@EnableWebMvc
 public class AppConfig implements BeanFactoryAware {
 
 	private BeanFactory beanFactory;
-
-	@Bean
-	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-		return new RequestMappingHandlerMapping();
-	}
-
-	@Bean
-	public RequestMappingHandlerAdapter requestMappingHandlerAdapter() {
-		return new RequestMappingHandlerAdapter();
-	}
 
 	@Bean
 	public InternalResourceViewResolver internalResourceViewResolver() {
@@ -40,7 +32,7 @@ public class AppConfig implements BeanFactoryAware {
 		return internalResourceViewResolver;
 	}
 
-//	@Bean
+	@Bean
 	public DataSource dataSource() {
 		DruidDataSource dataSource = new DruidDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
@@ -53,7 +45,8 @@ public class AppConfig implements BeanFactoryAware {
 	@Bean
 	public SqlSessionFactoryBean sqlSessionFactory() {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-		sqlSessionFactoryBean.setDataSource(dataSource());
+		// 有循环依赖问题，暂时这样处理
+		sqlSessionFactoryBean.setDataSource((DataSource) beanFactory.getBean("dataSource"));
 		sqlSessionFactoryBean.setMapperLocation("mappers");
 		return sqlSessionFactoryBean;
 	}

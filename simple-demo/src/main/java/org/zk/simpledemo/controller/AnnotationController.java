@@ -20,6 +20,8 @@ public class AnnotationController implements BeanFactoryAware {
 	@Autowired
 	private UserService userService;
 
+	private BeanFactory beanFactory;
+
 	@RequestMapping("/list")
 	public ModelAndView list() {
 		List<User> userList = userService.findAll();
@@ -31,6 +33,6 @@ public class AnnotationController implements BeanFactoryAware {
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) {
-		System.out.println(beanFactory);
+		this.beanFactory = beanFactory;
 	}
 }
