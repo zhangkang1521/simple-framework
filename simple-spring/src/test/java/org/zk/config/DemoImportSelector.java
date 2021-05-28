@@ -4,7 +4,7 @@ import org.zk.simplespring.context.annotation.ImportSelector;
 
 public class DemoImportSelector implements ImportSelector {
 	@Override
-	public String selectImport() {
-		return  FooConfig.class.getName();
+	public String[] selectImport() {
+		return  new String[] { FooConfig.class.getName() };
 	}
 }

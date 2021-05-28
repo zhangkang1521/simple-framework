@@ -1,6 +1,7 @@
 package org.zk.simpledemo.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import org.zk.simple.spring.boot.autoconfigure.EnableAutoConfiguration;
 import org.zk.simple.spring.web.servlet.config.annotation.EnableWebMvc;
 import org.zk.simple.spring.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.zk.simple.spring.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -19,7 +20,8 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan({"org.zk.simpledemo.controller", "org.zk.simpledemo.service"})
 @MapperScan(basePackage = "org.zk.simpledemo.dao", sqlSessionFactoryRef = "sqlSessionFactory")
-@EnableWebMvc
+//@EnableWebMvc
+@EnableAutoConfiguration
 public class AppConfig implements BeanFactoryAware {
 
 	private BeanFactory beanFactory;

@@ -7,5 +7,5 @@ package org.zk.simplespring.context.annotation;
 public interface ImportSelector {
 
 	// TODO 需要参数，参考EnableTransactionManagement
-	String selectImport();
+	String[] selectImport();
 }

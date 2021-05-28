@@ -1,0 +1,2 @@
+org.zk.simple.spring.boot.autoconfigure.EnableAutoConfiguration=\
+  org.zk.simple.spring.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration

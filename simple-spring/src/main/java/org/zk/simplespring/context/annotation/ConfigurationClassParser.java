@@ -40,7 +40,9 @@ class ConfigurationClassParser {
 				// @Import注解的3种情况
 				if (ImportSelector.class.isAssignableFrom(importClz)) {
 					ImportSelector importSelector = (ImportSelector) SpringBeanUtils.instantiateClass(importClz);
-					parse(ClassUtils.forName(importSelector.selectImport()));
+					for (String className : importSelector.selectImport()) {
+						parse(ClassUtils.forName(className));
+					}
 				} else if (ImportBeanDefinitionRegistrar.class.isAssignableFrom(importClz)) {
 					ImportBeanDefinitionRegistrar registrar = (ImportBeanDefinitionRegistrar) SpringBeanUtils.instantiateClass(importClz);
 					registrar.registerBeanDefinitions(clz, defaultListableBeanFactory);
@@ -57,7 +59,7 @@ class ConfigurationClassParser {
 		defaultListableBeanFactory.registerBeanDefinition(configurationBeanName, configurationBeanDefinition);
 
 		// @Bean解析
-		Method[] methods = clz.getDeclaredMethods();
+		Method[] methods = clz.getMethods();
 		for (Method method : methods) {
 			if (method.getAnnotation(Bean.class) != null) {
 				BeanDefinition beanDefinition = new BeanDefinition();
