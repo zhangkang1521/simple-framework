@@ -4,7 +4,6 @@ import org.zk.simple.spring.web.servlet.support.AbstractAnnotationConfigDispatch
 
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-	@Override
 	public Class<?> getAnnotationClass() {
 		return AppConfig.class;
 	}

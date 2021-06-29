@@ -14,6 +14,8 @@ public class ContextLoaderListener implements ServletContextListener {
 
 	private WebApplicationContext webApplicationContext;
 
+	public static final String CONTEXT_CONFIG_LOCATION_PARAM = "contextConfigLocation";
+
 	public ContextLoaderListener() {
 
 	}
@@ -25,7 +27,8 @@ public class ContextLoaderListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		if (webApplicationContext == null) {
-			webApplicationContext = new XmlWebApplicationContext("applicationContext.xml");
+			String contextConfigLocation = sce.getServletContext().getInitParameter(CONTEXT_CONFIG_LOCATION_PARAM);
+			webApplicationContext = new XmlWebApplicationContext(contextConfigLocation);
 		}
 		webApplicationContext.setServletContext(sce.getServletContext());
 		sce.getServletContext().setAttribute(WebApplicationContext.WEB_APPLICATION_CONTEXT, webApplicationContext);

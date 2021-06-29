@@ -1,12 +1,7 @@
 package org.zk.simpledemo.config;
 
-import com.alibaba.druid.pool.DruidDataSource;
 import org.zk.simple.spring.boot.autoconfigure.EnableAutoConfiguration;
-import org.zk.simple.spring.web.servlet.config.annotation.EnableWebMvc;
-import org.zk.simple.spring.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import org.zk.simple.spring.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.zk.simple.spring.web.servlet.view.InternalResourceViewResolver;
-import org.zk.simplemybatis.SqlSessionFactory;
 import org.zk.simplemybatisspring.SqlSessionFactoryBean;
 import org.zk.simplemybatisspring.annotation.MapperScan;
 import org.zk.simplespring.beans.factory.BeanFactory;
@@ -20,7 +15,6 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan({"org.zk.simpledemo.controller", "org.zk.simpledemo.service"})
 @MapperScan(basePackage = "org.zk.simpledemo.dao", sqlSessionFactoryRef = "sqlSessionFactory")
-//@EnableWebMvc
 @EnableAutoConfiguration
 public class AppConfig implements BeanFactoryAware {
 
@@ -32,16 +26,6 @@ public class AppConfig implements BeanFactoryAware {
 		internalResourceViewResolver.setPrefix("/WEB-INF/view/");
 		internalResourceViewResolver.setSuffix(".jsp");
 		return internalResourceViewResolver;
-	}
-
-	@Bean
-	public DataSource dataSource() {
-		DruidDataSource dataSource = new DruidDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/zk");
-		dataSource.setUsername("root");
-		dataSource.setPassword("123456");
-		return dataSource;
 	}
 
 	@Bean
