@@ -16,6 +16,7 @@
         <module>simple-mybatis-spring</module>
         <module>simple-spring-boot</module>
         <module>simple-demo</module>
+        <module>simple-mybatis-spring-boot-starter</module>
     </modules>
 
 

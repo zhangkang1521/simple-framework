@@ -1,3 +1,4 @@
 org.zk.simple.spring.boot.autoconfigure.EnableAutoConfiguration=\
   org.zk.simple.spring.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration,\
-  org.zk.simple.spring.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  org.zk.simple.spring.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,\
+  org.zk.simple.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration
