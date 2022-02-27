@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DefaultListableBeanFactory implements BeanFactory {
+public class DefaultListableBeanFactory implements BeanFactory, BeanDefinitionRegistry {
 
 	private static final Logger log = LoggerFactory.getLogger(DefaultListableBeanFactory.class);
 
@@ -39,9 +39,15 @@ public class DefaultListableBeanFactory implements BeanFactory {
 	/** bean后置处理器 */
 	private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
+	@Override
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
 		log.info("注册BeanDefinition {}", beanName);
 		this.beanDefinitionMap.put(beanName, beanDefinition);
+	}
+
+	@Override
+	public boolean containsBeanDefinition(String beanName) {
+		return beanDefinitionMap.containsKey(beanName);
 	}
 
 	@Override

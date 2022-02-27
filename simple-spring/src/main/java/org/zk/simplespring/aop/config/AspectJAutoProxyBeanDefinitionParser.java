@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.zk.simplespring.beans.factory.config.BeanDefinition;
+import org.zk.simplespring.beans.factory.support.BeanDefinitionRegistry;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.beans.factory.xml.BeanDefinitionParser;
 
@@ -15,8 +16,8 @@ public class AspectJAutoProxyBeanDefinitionParser implements BeanDefinitionParse
 	public static final Logger log = LoggerFactory.getLogger(AspectJAutoProxyBeanDefinitionParser.class);
 
 	@Override
-	public BeanDefinition parse(Element element, DefaultListableBeanFactory beanFactory) {
-		AopConfigUtils.registerAutoProxyCreatorIfNecessory(beanFactory);
+	public BeanDefinition parse(Element element, BeanDefinitionRegistry registry) {
+		AopConfigUtils.registerAutoProxyCreatorIfNecessory(registry);
 		return null;
 	}
 }

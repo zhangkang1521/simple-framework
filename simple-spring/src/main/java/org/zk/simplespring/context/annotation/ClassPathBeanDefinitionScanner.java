@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zk.simplespring.beans.SpringBeanUtils;
 import org.zk.simplespring.beans.factory.config.BeanDefinition;
+import org.zk.simplespring.beans.factory.support.BeanDefinitionRegistry;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.core.type.filter.AnnotationTypeFilter;
 import org.zk.simplespring.core.type.filter.TypeFilter;
@@ -31,12 +32,12 @@ public class ClassPathBeanDefinitionScanner {
 
 	public static final Logger log = LoggerFactory.getLogger(ClassPathBeanDefinitionScanner.class);
 
-	private DefaultListableBeanFactory defaultListableBeanFactory;
+	private BeanDefinitionRegistry registry;
 
 	private final List<TypeFilter> includeFilters = new LinkedList<>();
 
-	public ClassPathBeanDefinitionScanner(DefaultListableBeanFactory defaultListableBeanFactory, boolean useDefaultIncludeFilter) {
-		this.defaultListableBeanFactory = defaultListableBeanFactory;
+	public ClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry, boolean useDefaultIncludeFilter) {
+		this.registry = registry;
 		if (useDefaultIncludeFilter) {
 			registerDefaultIncludeFilters();
 		}
@@ -51,7 +52,7 @@ public class ClassPathBeanDefinitionScanner {
 		List<BeanDefinition> beanDefinitions = findBeanDefinitions(basePackage);
 		for (BeanDefinition beanDefinition : beanDefinitions) {
 			String beanName = SpringBeanUtils.generateBeanName((String)beanDefinition.getBeanClass());
-			defaultListableBeanFactory.registerBeanDefinition(beanName, beanDefinition);
+			registry.registerBeanDefinition(beanName, beanDefinition);
 		}
 		return beanDefinitions;
 	}
@@ -90,7 +91,7 @@ public class ClassPathBeanDefinitionScanner {
 
 
 
-	public void setDefaultListableBeanFactory(DefaultListableBeanFactory defaultListableBeanFactory) {
-		this.defaultListableBeanFactory = defaultListableBeanFactory;
+	public void setDefaultListableBeanFactory(BeanDefinitionRegistry registry) {
+		this.registry = registry;
 	}
 }

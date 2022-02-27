@@ -17,6 +17,6 @@ public class AbstractRefreshableConfigApplicationContext extends AbstractApplica
 		super.obtainFreshBeanFactory();
 		// 读取xml配置，加载beanDefinition
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
-		reader.loadBeanDefinition(new ClassPathResource(this.configLocation));
+		reader.loadBeanDefinitions(new ClassPathResource(this.configLocation));
 	}
 }

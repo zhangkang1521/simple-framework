@@ -8,7 +8,7 @@ public class XmlBeanFactory extends DefaultListableBeanFactory {
 	private final XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this);
 
 	public XmlBeanFactory(Resource resource) {
-		this.reader.loadBeanDefinition(resource);
+		this.reader.loadBeanDefinitions(resource);
 	}
 
 }

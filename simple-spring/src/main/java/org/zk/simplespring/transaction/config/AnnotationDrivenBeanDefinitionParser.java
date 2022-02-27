@@ -7,6 +7,7 @@ import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.beans.factory.config.BeanDefinition;
 import org.zk.simplespring.beans.factory.config.RuntimeBeanReference;
 import org.zk.simplespring.beans.factory.config.TypedStringValue;
+import org.zk.simplespring.beans.factory.support.BeanDefinitionRegistry;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.beans.factory.xml.BeanDefinitionParser;
 import org.zk.simplespring.transaction.interceptor.BeanFactoryTransactionAttributeSourceAdvisor;
@@ -30,18 +31,18 @@ public class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParse
 	public static final String TRANSACTION_ADVISOR_BEAN_NAME = "transactionAdvisor";
 
 	@Override
-	public BeanDefinition parse(Element element, DefaultListableBeanFactory beanFactory) {
-		AopConfigUtils.registerAutoProxyCreatorIfNecessory(beanFactory);
+	public BeanDefinition parse(Element element, BeanDefinitionRegistry registry) {
+		AopConfigUtils.registerAutoProxyCreatorIfNecessory(registry);
 
 		BeanDefinition transactionInterceptor = new BeanDefinition();
 		transactionInterceptor.setBeanClass(TransactionInterceptor.class);
 		transactionInterceptor.addProperty(new PropertyValue("transactionManager", new RuntimeBeanReference("transactionManager")));
-		beanFactory.registerBeanDefinition(TRANSACTION_INTERCEPTOR_BEAN_NAME, transactionInterceptor);
+		registry.registerBeanDefinition(TRANSACTION_INTERCEPTOR_BEAN_NAME, transactionInterceptor);
 
 		BeanDefinition transactionAdvisor = new BeanDefinition();
 		transactionAdvisor.setBeanClass(BeanFactoryTransactionAttributeSourceAdvisor.class);
 		transactionAdvisor.addProperty(new PropertyValue("adviceBeanName", new TypedStringValue(TRANSACTION_INTERCEPTOR_BEAN_NAME)));
-		beanFactory.registerBeanDefinition(TRANSACTION_ADVISOR_BEAN_NAME, transactionAdvisor);
+		registry.registerBeanDefinition(TRANSACTION_ADVISOR_BEAN_NAME, transactionAdvisor);
 		return null;
 	}
 }

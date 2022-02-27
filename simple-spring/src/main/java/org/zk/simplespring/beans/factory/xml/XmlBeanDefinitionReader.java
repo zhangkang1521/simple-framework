@@ -12,8 +12,12 @@ import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.beans.factory.config.BeanDefinition;
 import org.zk.simplespring.beans.factory.config.RuntimeBeanReference;
 import org.zk.simplespring.beans.factory.config.TypedStringValue;
+import org.zk.simplespring.beans.factory.support.AbstractBeanDefinitionReader;
+import org.zk.simplespring.beans.factory.support.BeanDefinitionReader;
+import org.zk.simplespring.beans.factory.support.BeanDefinitionRegistry;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 import org.zk.simplespring.core.io.Resource;
+import org.zk.simplespring.core.io.ResourceLoader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,7 +25,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class XmlBeanDefinitionReader {
+/**
+ * xml BeanDefinition 读取
+ * @author zhangkang
+ */
+public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	public static final Logger log = LoggerFactory.getLogger(XmlBeanDefinitionReader.class);
 
@@ -31,16 +39,15 @@ public class XmlBeanDefinitionReader {
 
 	private static final String XSD_SCHEMA_LANGUAGE = "http://www.w3.org/2001/XMLSchema";
 
-	private DefaultListableBeanFactory defaultListableBeanFactory;
-
 	private NamespaceHandlerResolver namespaceHandlerResolver;
 
-	public XmlBeanDefinitionReader(DefaultListableBeanFactory defaultListableBeanFactory) {
-		this.defaultListableBeanFactory = defaultListableBeanFactory;
+	public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
+		super(registry);
 		namespaceHandlerResolver = new DefaultNamespaceHandlerResolver();
 	}
 
-	public void loadBeanDefinition(Resource resource) {
+	@Override
+	public void loadBeanDefinitions(Resource resource) {
 		log.info("loadBeanDefinition from classpath {}", resource);
 		InputStream inputStream = resource.getInputStream();
 
@@ -49,17 +56,22 @@ public class XmlBeanDefinitionReader {
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setNamespaceAware(true);
-			factory.setValidating(false); // 验证
+			factory.setValidating(false);
 			factory.setAttribute(SCHEMA_LANGUAGE_ATTRIBUTE, XSD_SCHEMA_LANGUAGE);
 
 			DocumentBuilder dBuilder = factory.newDocumentBuilder();
-			Document doc = dBuilder.parse(inputSource); // 整个xml文档
+			// 整个xml文档
+			Document doc = dBuilder.parse(inputSource);
 
-			Element root = doc.getDocumentElement(); // beans
-			NodeList noList = root.getChildNodes(); // beans的子元素
+			// beans
+			Element root = doc.getDocumentElement();
+			// beans的子元素
+			NodeList noList = root.getChildNodes();
 			for (int i = 0; i < noList.getLength(); i++) {
-				Node node = noList.item(i); // text bean text 这3个
-				if (node instanceof Element) { // 过滤掉text
+				// text bean text 这3个
+				Node node = noList.item(i);
+				// 过滤掉text
+				if (node instanceof Element) {
 					if (DEFAULT_NAMESPACE_URI.equals(node.getNamespaceURI())) {
 						parseDefaultElement((Element) node);
 					} else {
@@ -76,6 +88,13 @@ public class XmlBeanDefinitionReader {
 		}
 	}
 
+	@Override
+	public void loadBeanDefinitions(String location) {
+		ResourceLoader resourceLoader = getResourceLoader();
+		Resource resource = resourceLoader.getResource(location);
+		loadBeanDefinitions(resource);
+	}
+
 	/**
 	 * 处理默认标签 <bean></bean>
 	 * @param node
@@ -86,7 +105,7 @@ public class XmlBeanDefinitionReader {
 		BeanDefinition beanDefinition = new BeanDefinition();
 		beanDefinition.setBeanClass(className);
 		parseProperty(node, beanDefinition);
-		defaultListableBeanFactory.registerBeanDefinition(beanName, beanDefinition);
+		getRegistry().registerBeanDefinition(beanName, beanDefinition);
 	}
 
 	/**
@@ -97,7 +116,7 @@ public class XmlBeanDefinitionReader {
 		String namespace = node.getNamespaceURI();
 		log.info("解析自定义标签namespace {}", namespace);
 		NamespaceHandler namespaceHandler = this.namespaceHandlerResolver.resolve(namespace);
-		namespaceHandler.parse(node, defaultListableBeanFactory);
+		namespaceHandler.parse(node, getRegistry());
 	}
 
 

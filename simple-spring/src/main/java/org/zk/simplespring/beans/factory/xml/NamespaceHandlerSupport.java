@@ -2,6 +2,7 @@ package org.zk.simplespring.beans.factory.xml;
 
 import org.w3c.dom.Element;
 import org.zk.simplespring.beans.factory.config.BeanDefinition;
+import org.zk.simplespring.beans.factory.support.BeanDefinitionRegistry;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 
 import java.util.HashMap;
@@ -16,9 +17,9 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	}
 
 	@Override
-	public BeanDefinition parse(Element element, DefaultListableBeanFactory beanFactory) {
+	public BeanDefinition parse(Element element, BeanDefinitionRegistry registry) {
 		String localName = element.getLocalName();
 		BeanDefinitionParser parser = parsers.get(localName);
-		return parser.parse(element, beanFactory);
+		return parser.parse(element, registry);
 	}
 }
