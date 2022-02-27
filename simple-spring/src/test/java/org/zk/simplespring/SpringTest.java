@@ -1,8 +1,10 @@
 package org.zk.simplespring;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.zk.aop.Target;
 import org.zk.config.AppConfig;
+import org.zk.domain.Order;
 import org.zk.domain.User;
 import org.zk.domain.UserFactory;
 import org.zk.service.UserService;
@@ -15,31 +17,34 @@ public class SpringTest {
 	@Test
 	public void testGetBean() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-		Object user =  applicationContext.getBean("user");
-
+		User user =  (User)applicationContext.getBean("user");
+		Assert.assertEquals(100, user.getId());
+		Assert.assertEquals("zk", user.getUsername());
 	}
 
 	@Test
 	public void testFactoryBean() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-		User user = (User) applicationContext.getBean("user");
-		UserFactory userFactory = (UserFactory) applicationContext.getBean("&user");
-		System.out.println(userFactory.getObjectType());
+		User user = (User) applicationContext.getBean("user2");
+		Assert.assertEquals(101, user.getId());
+		UserFactory userFactory = (UserFactory) applicationContext.getBean("&user2");
+		// TODO
+		// Assert.assertEquals(user, userFactory.getObject());
 	}
 
 	@Test
 	public void getBeanByType() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-		User user = (User) applicationContext.getBean(User.class);
-		System.out.println(user);
+		Order order =  applicationContext.getBean(Order.class);
+		Assert.assertNotNull(order);
 	}
 
 	@Test
 	public void testAop() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-aop.xml");
 		Target target = (Target)applicationContext.getBean("target");
-//		target.sayWorld("zk");
 		target.sayHello("zk");
+		target.sayWorld("zk");
 	}
 
 	@Test

@@ -11,6 +11,10 @@
 
     <artifactId>simple-spring-boot</artifactId>
 
+    <properties>
+        <embed.tomcat.version>8.5.31</embed.tomcat.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.zk</groupId>
@@ -29,6 +33,26 @@
             <version>1.0.9</version>
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${embed.tomcat.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${embed.tomcat.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.tomcat.embed</groupId>-->
+            <!--<artifactId>tomcat-embed-logging-juli</artifactId>-->
+            <!--<version>${embed.tomcat.version}</version>-->
+        <!--</dependency>-->
+
+
     </dependencies>
 
 </project>

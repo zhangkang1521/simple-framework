@@ -43,6 +43,7 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AbstractAdvisorAutoP
 		return false;
 	}
 
+	@Override
 	public boolean isInfrastructureClass(Class<?> aClass) {
 		return isAspect(aClass) || super.isInfrastructureClass(aClass);
 	}

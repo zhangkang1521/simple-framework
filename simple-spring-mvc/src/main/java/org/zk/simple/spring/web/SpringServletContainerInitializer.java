@@ -18,11 +18,12 @@ public class SpringServletContainerInitializer implements ServletContainerInitia
 
 	@Override
 	public void onStartup(Set<Class<?>> c, ServletContext sc) throws ServletException {
-		for (Class<?> clz : c) {
-			if (!Modifier.isAbstract(clz.getModifiers())) {
-				WebApplicationInitializer initializer = (WebApplicationInitializer)SpringBeanUtils.instantiateClass(clz);
-				initializer.onStartup(sc);
-			}
-		}
+		System.out.println("======= SpringServletContainerInitializer.onStartup ======");
+//		for (Class<?> clz : c) {
+//			if (!Modifier.isAbstract(clz.getModifiers())) {
+//				WebApplicationInitializer initializer = (WebApplicationInitializer)SpringBeanUtils.instantiateClass(clz);
+//				initializer.onStartup(sc);
+//			}
+//		}
 	}
 }

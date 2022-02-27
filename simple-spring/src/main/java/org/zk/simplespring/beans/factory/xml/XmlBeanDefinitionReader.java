@@ -13,6 +13,7 @@ import org.zk.simplespring.beans.factory.config.BeanDefinition;
 import org.zk.simplespring.beans.factory.config.RuntimeBeanReference;
 import org.zk.simplespring.beans.factory.config.TypedStringValue;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
+import org.zk.simplespring.core.io.Resource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,10 +40,9 @@ public class XmlBeanDefinitionReader {
 		namespaceHandlerResolver = new DefaultNamespaceHandlerResolver();
 	}
 
-	public void loadBeanDefinition(String resource) {
+	public void loadBeanDefinition(Resource resource) {
 		log.info("loadBeanDefinition from classpath {}", resource);
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		InputStream inputStream = classLoader.getResourceAsStream(resource);
+		InputStream inputStream = resource.getInputStream();
 
 		try {
 			InputSource inputSource = new InputSource(inputStream);
