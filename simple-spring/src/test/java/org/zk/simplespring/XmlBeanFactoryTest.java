@@ -18,4 +18,6 @@ public class XmlBeanFactoryTest {
 		Assert.assertEquals(100, user.getId());
 		Assert.assertEquals("zk", user.getUsername());
 	}
+
+
 }
