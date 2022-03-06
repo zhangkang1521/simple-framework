@@ -1,19 +1,13 @@
 package org.zk.simplespring.beans.factory.support;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.zk.simplespring.beans.PropertyValue;
-import org.zk.simplespring.beans.SpringBeanUtils;
 import org.zk.simplespring.beans.factory.BeanFactory;
-import org.zk.simplespring.beans.factory.BeanFactoryAware;
 import org.zk.simplespring.beans.factory.FactoryBean;
-import org.zk.simplespring.beans.factory.InitializingBean;
-import org.zk.simplespring.beans.factory.config.*;
+import org.zk.simplespring.beans.factory.config.BeanDefinition;
+import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
+import org.zk.simplespring.beans.factory.config.ConfigurableBeanFactory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author zhangkang
  * @create 2022/2/27 20:38
  */
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory {
+public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
 
 	private Logger log = LoggerFactory.getLogger(AbstractBeanFactory.class);
 
@@ -100,7 +94,8 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 		return beanPostProcessors;
 	}
 
-	public void addBeanPostProcessors(BeanPostProcessor beanPostProcessor) {
+	@Override
+	public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
 		this.beanPostProcessors.add(beanPostProcessor);
 	}
 

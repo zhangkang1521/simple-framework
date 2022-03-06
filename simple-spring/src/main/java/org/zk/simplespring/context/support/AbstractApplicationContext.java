@@ -2,7 +2,6 @@ package org.zk.simplespring.context.support;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.zk.simplespring.beans.factory.BeanFactory;
 import org.zk.simplespring.beans.factory.config.BeanDefinitionRegistryPostProcessor;
 import org.zk.simplespring.beans.factory.config.BeanFactoryPostProcessor;
 import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
@@ -79,7 +78,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		for (String beanName : beanNames) {
 			BeanPostProcessor beanPostProcessor = (BeanPostProcessor) beanFactory.getBean(beanName);
 			log.info("register BeanPostProcessor {}", beanName);
-			beanFactory.addBeanPostProcessors(beanPostProcessor);
+			beanFactory.addBeanPostProcessor(beanPostProcessor);
 		}
 	}
 
@@ -91,7 +90,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	}
 
 
-	//
+	// ========================== BeanFactory的方法 ===============================
 
 	@Override
 	public Object getBean(String name) {
@@ -106,5 +105,18 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	@Override
 	public <T> List<T> getBeanList(Class<T> requiredType) {
 		return getBeanFactory().getBeanList(requiredType);
+	}
+
+	// =========================================================
+
+	@Override
+	public void close() {
+		getBeanFactory().destroySingletons();
+	}
+
+
+	@Override
+	public void registerShutdownHook() {
+		Runtime.getRuntime().addShutdownHook(new Thread(this::close));
 	}
 }

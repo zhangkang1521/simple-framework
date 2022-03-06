@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.beans.SpringBeanUtils;
 import org.zk.simplespring.beans.factory.BeanFactoryAware;
+import org.zk.simplespring.beans.factory.DisposableBean;
 import org.zk.simplespring.beans.factory.InitializingBean;
 import org.zk.simplespring.beans.factory.config.*;
 
@@ -31,6 +32,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	public Object createBean(String beanName, BeanDefinition beanDefinition) {
 		log.info("create bean instance {}", beanName);
 		Object bean;
+
+		// 创建bean
 		String factoryBeanName = beanDefinition.getFactoryBeanName();
 		Method factoryMethod = beanDefinition.getFactoryMethod();
 		if (factoryBeanName != null && factoryMethod != null) {
@@ -53,7 +56,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		populateBean(beanName, bean, beanDefinition);
 		// 初始化
 		bean = initializeBean(beanName, bean, beanDefinition);
+
+		// 注册实现了 DisposableBean 接口的 Bean 对象
+		registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
 		return bean;
+	}
+
+	private void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+		if (bean instanceof DisposableBean) {
+			registerDisposableBean(beanName, (DisposableBean)bean);
+		}
 	}
 
 	/**

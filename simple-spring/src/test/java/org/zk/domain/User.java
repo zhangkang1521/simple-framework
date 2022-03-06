@@ -1,9 +1,13 @@
 package org.zk.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.zk.simplespring.beans.factory.DisposableBean;
 import org.zk.simplespring.beans.factory.InitializingBean;
-import org.zk.simplespring.beans.factory.annotation.Autowired;
 
-public class User implements InitializingBean {
+public class User implements InitializingBean, DisposableBean {
+
+	private static Logger log = LoggerFactory.getLogger(User.class);
 
 	private int id;
 	private String username;
@@ -37,5 +41,10 @@ public class User implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() {
 		System.out.println("ok");
+	}
+
+	@Override
+	public void destroy() {
+		log.info(">>>> destroy");
 	}
 }
