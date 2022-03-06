@@ -16,10 +16,26 @@ public class SpringTest {
 
 	@Test
 	public void testGetBean() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 		User user =  (User)applicationContext.getBean("user");
 		Assert.assertEquals(100, user.getId());
 		Assert.assertEquals("zk", user.getUsername());
+	}
+
+	@Test
+	public void testBeanFactoryPostProcessor() {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beanFactoryPostProcessor.xml");
+		User user =  (User)applicationContext.getBean("user");
+		Assert.assertEquals(100, user.getId());
+		Assert.assertEquals("MyBeanFactoryPostProcessor add!!", user.getUsername());
+	}
+
+	@Test
+	public void testBeanPostProcessor() {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beanPostProcessor.xml");
+		User user =  (User)applicationContext.getBean("user");
+		Assert.assertEquals(100, user.getId());
+		Assert.assertEquals("MyBeanPostProcessor modified!!", user.getUsername());
 	}
 
 	@Test

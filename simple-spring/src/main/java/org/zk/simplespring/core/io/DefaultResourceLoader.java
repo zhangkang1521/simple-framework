@@ -20,8 +20,10 @@ public class DefaultResourceLoader implements ResourceLoader {
 				URL url = new URL(location);
 				return new UrlResource(url);
 			} catch (MalformedURLException e) {
-				return new FileSystemResource(location);
+				// Spring中默认使用ClassPathContextResource
+				return new ClassPathResource(location);
 			}
 		}
 	}
+
 }
