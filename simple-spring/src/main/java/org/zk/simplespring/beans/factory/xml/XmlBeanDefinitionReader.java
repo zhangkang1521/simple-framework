@@ -90,6 +90,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	@Override
 	public void loadBeanDefinitions(String location) {
+		// ApplicationContext启动时，是自己
+		// BeanFactory不走这里，直接使用外部传入的Resource，无需ResourceLoader
 		ResourceLoader resourceLoader = getResourceLoader();
 		Resource resource = resourceLoader.getResource(location);
 		loadBeanDefinitions(resource);
@@ -137,4 +139,6 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			}
 		}
 	}
+
+
 }

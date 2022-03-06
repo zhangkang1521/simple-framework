@@ -54,6 +54,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 		Object bean = createBean(beanName, beanDefinition);
 
 		addSingleton(beanName, bean);
+		// 如果实现了FactoryBean接口，调用getObject方法获取bean
 		return getObjectForBeanInstance(name, beanName, bean);
 	}
 

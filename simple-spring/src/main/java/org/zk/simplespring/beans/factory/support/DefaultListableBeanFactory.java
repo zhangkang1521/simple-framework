@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zk.simplespring.beans.factory.BeanFactory;
 import org.zk.simplespring.beans.factory.FactoryBean;
+import org.zk.simplespring.beans.factory.ListableBeanFactory;
 import org.zk.simplespring.beans.factory.config.BeanDefinition;
 
 import java.util.ArrayList;
@@ -13,10 +14,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * DefaultListableBeanFactory，实现了BeanDefinitionRegistry接口
+ * DefaultListableBeanFactory，实现了BeanDefinitionRegistry， ListableBeanFactory接口
  * @author zhangkang
  */
-public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry {
+public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry, ListableBeanFactory {
 
 	private static final Logger log = LoggerFactory.getLogger(DefaultListableBeanFactory.class);
 
@@ -69,6 +70,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		});
 		return beanNames;
 	}
+
+	/** ================================ 实现ListableBeanFactory ======================================== */
 
 	@Override
 	public <T> List<T> getBeanList(Class<T> requiredType) {

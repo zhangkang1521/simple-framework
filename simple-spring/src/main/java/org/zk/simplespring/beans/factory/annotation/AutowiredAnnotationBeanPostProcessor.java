@@ -6,6 +6,7 @@ import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.beans.factory.BeanFactory;
 import org.zk.simplespring.beans.factory.BeanFactoryAware;
 import org.zk.simplespring.beans.factory.config.InstantiationAwareBeanPostProcessor;
+import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -15,7 +16,7 @@ public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareB
 
 	public static final Logger log = LoggerFactory.getLogger(AutowiredAnnotationBeanPostProcessor.class);
 
-	private BeanFactory beanFactory;
+	private DefaultListableBeanFactory beanFactory;
 
 	@Override
 	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) {
@@ -59,6 +60,6 @@ public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareB
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
+		this.beanFactory = (DefaultListableBeanFactory) beanFactory;
 	}
 }

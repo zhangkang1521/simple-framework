@@ -16,7 +16,7 @@ public class SpringTest {
 
 	@Test
 	public void testGetBean() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 		User user =  (User)applicationContext.getBean("user");
 		Assert.assertEquals(100, user.getId());
 		Assert.assertEquals("zk", user.getUsername());

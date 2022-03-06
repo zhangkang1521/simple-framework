@@ -5,6 +5,9 @@ import org.zk.simplespring.context.support.AbstractApplicationContext;
 
 public class AnnotationConfigApplicationContext extends AbstractApplicationContext {
 
+	// TODO 得往上挪
+	private DefaultListableBeanFactory beanFactory;
+
 	private AnnotatedBeanDefinitionReader reader;
 
 	public AnnotationConfigApplicationContext(Class<?> annotationClass) {
@@ -16,6 +19,16 @@ public class AnnotationConfigApplicationContext extends AbstractApplicationConte
 
 	public void obtainFreshBeanFactory() {
 		// 构造函数中已经创建了beanFactory，这里什么都不做
+	}
+
+	@Override
+	protected void refreshBeanFactory() {
+
+	}
+
+	@Override
+	protected DefaultListableBeanFactory getBeanFactory() {
+		return beanFactory;
 	}
 
 }

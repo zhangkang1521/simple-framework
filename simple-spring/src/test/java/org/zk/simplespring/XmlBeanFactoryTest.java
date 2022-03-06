@@ -19,5 +19,12 @@ public class XmlBeanFactoryTest {
 		Assert.assertEquals("zk", user.getUsername());
 	}
 
+	@Test
+	public void factoryBean() {
+		Resource resource = new ClassPathResource("factory-bean.xml");
+		BeanFactory beanFactory = new XmlBeanFactory(resource);
+		User user = (User)beanFactory.getBean("user");
+	}
+
 
 }

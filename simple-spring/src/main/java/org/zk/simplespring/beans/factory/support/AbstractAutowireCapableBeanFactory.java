@@ -104,7 +104,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			log.info("获取依赖bean:{}", ((RuntimeBeanReference) sourceValue).getBeanName());
 			return getBean(((RuntimeBeanReference) sourceValue).getBeanName());
 		} else {
-			throw new IllegalArgumentException("暂不支持的propery");
+			throw new IllegalArgumentException("暂不支持的property");
 		}
 	}
 
