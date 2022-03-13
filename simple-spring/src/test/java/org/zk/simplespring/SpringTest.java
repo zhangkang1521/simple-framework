@@ -9,6 +9,7 @@ import org.zk.domain.User;
 import org.zk.domain.UserFactory;
 import org.zk.service.UserService;
 import org.zk.simplespring.context.annotation.AnnotationConfigApplicationContext;
+import org.zk.simplespring.context.event.ContextClosedEvent;
 import org.zk.simplespring.context.support.ApplicationContext;
 import org.zk.simplespring.context.support.ClassPathXmlApplicationContext;
 
@@ -17,9 +18,9 @@ public class SpringTest {
 	@Test
 	public void testGetBean() {
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-		User user =  (User)applicationContext.getBean("user");
-		User user2 =  (User)applicationContext.getBean("user");
-//		Assert.assertEquals(100, user.getId());
+//		applicationContext.publishEvent(new ContextRefreshedEvent(applicationContext));
+		applicationContext.publishEvent(new ContextClosedEvent(applicationContext));
+		//		Assert.assertEquals(100, user.getId());
 //		Assert.assertEquals("zk", user.getUsername());
 		applicationContext.close();
 //		applicationContext.registerShutdownHook();

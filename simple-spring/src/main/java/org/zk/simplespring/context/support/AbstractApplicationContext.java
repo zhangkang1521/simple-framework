@@ -6,7 +6,13 @@ import org.zk.simplespring.beans.factory.config.BeanDefinitionRegistryPostProces
 import org.zk.simplespring.beans.factory.config.BeanFactoryPostProcessor;
 import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
 import org.zk.simplespring.beans.factory.support.DefaultListableBeanFactory;
+import org.zk.simplespring.context.ApplicationEvent;
+import org.zk.simplespring.context.ApplicationListener;
 import org.zk.simplespring.context.ConfigurableApplicationContext;
+import org.zk.simplespring.context.event.ApplicationEventMulticaster;
+import org.zk.simplespring.context.event.ContextClosedEvent;
+import org.zk.simplespring.context.event.ContextRefreshedEvent;
+import org.zk.simplespring.context.event.SimpleApplicationEventMulticaster;
 import org.zk.simplespring.core.io.DefaultResourceLoader;
 
 import java.util.List;
@@ -18,6 +24,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 	private static final Logger log = LoggerFactory.getLogger(AbstractApplicationContext.class);
 
+	/**
+	 * 事件广播器bean名称
+	 */
+	public static final String APPLICATION_EVENT_MULTICASTER_BEAN_NAME = "applicationEventMulticaster";
+
+	/**
+	 * 事件广播器
+	 */
+	private ApplicationEventMulticaster applicationEventMulticaster;
 
 	@Override
 	public void refresh() {
@@ -34,8 +49,35 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		// 3. 注册Bean后置处理器
 		registerBeanPostProcessors(beanFactory);
 
+		// 初始化事件广播器，publishEvent会获取事件广播器，广播事件到所有Listener
+		initApplicationEventMulticaster(beanFactory);
+
+		// 注册事件监听器
+		registerListeners(beanFactory);
+
+
 		// 4.实例化所有单例bean
 		finishBeanFactoryInitialization(beanFactory);
+
+		// 发布容器刷新完成事件
+		finishRefresh();
+	}
+
+	private void initApplicationEventMulticaster(DefaultListableBeanFactory beanFactory) {
+		applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
+		// 不用放入容器中，spring中是为了父子容器共用一个事件广播器
+		// beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, applicationEventMulticaster);
+	}
+
+	/**
+	 * 将事件监听器注册到事件广播器中
+	 * @param beanFactory
+	 */
+	private void registerListeners(DefaultListableBeanFactory beanFactory) {
+		List<ApplicationListener> applicationListeners = beanFactory.getBeanList(ApplicationListener.class);
+		for (ApplicationListener listener : applicationListeners) {
+			applicationEventMulticaster.addApplicationListener(listener);
+		}
 	}
 
 	private void prepareBeanFactory(DefaultListableBeanFactory beanFactory) {
@@ -96,6 +138,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		beanFactory.preInstantiateSingletons();
 	}
 
+	public void finishRefresh() {
+		publishEvent(new ContextRefreshedEvent(this));
+	}
+
+	@Override
+	public void publishEvent(ApplicationEvent event) {
+		applicationEventMulticaster.multicastEvent(event);
+	}
+
 
 	// ========================== BeanFactory的方法 ===============================
 
@@ -119,6 +170,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	@Override
 	public void close() {
 		getBeanFactory().destroySingletons();
+		publishEvent(new ContextClosedEvent(this));
 	}
 
 

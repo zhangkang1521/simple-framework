@@ -30,6 +30,10 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 		return this.singletonObjects.get(name);
 	}
 
+	public void registerSingleton(String beanName, Object singletonObject) {
+		this.singletonObjects.put(beanName, singletonObject);
+	}
+
 	/**
 	 * 加入缓存
 	 * @param name
