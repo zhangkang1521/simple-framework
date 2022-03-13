@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
-	/** 单例bean */
+	/** 单例bean，beanName -> instance, 如果是FactoryBean存放的是FactoryBean的实例  */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>();
 
 	private final Map<String, DisposableBean> disposableBeans = new HashMap<>();

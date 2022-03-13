@@ -26,6 +26,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 		DefaultListableBeanFactory beanFactory = getBeanFactory();
 
+		prepareBeanFactory(beanFactory);
+
 		// 2. 调用BeanFactory后置处理
 		invokeBeanFactoryPostProcessors(beanFactory);
 
@@ -34,6 +36,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 		// 4.实例化所有单例bean
 		finishBeanFactoryInitialization(beanFactory);
+	}
+
+	private void prepareBeanFactory(DefaultListableBeanFactory beanFactory) {
+		// 还有其他spel表达式等
+		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 	}
 
 	/**

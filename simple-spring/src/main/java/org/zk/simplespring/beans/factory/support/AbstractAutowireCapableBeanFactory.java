@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.beans.SpringBeanUtils;
-import org.zk.simplespring.beans.factory.BeanFactoryAware;
-import org.zk.simplespring.beans.factory.DisposableBean;
-import org.zk.simplespring.beans.factory.InitializingBean;
+import org.zk.simplespring.beans.factory.*;
 import org.zk.simplespring.beans.factory.config.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -59,6 +57,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// 注册实现了 DisposableBean 接口的 Bean 对象
 		registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
+
+		// 放入缓存
+		addSingleton(beanName, bean);
 		return bean;
 	}
 
@@ -170,8 +171,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	private void invokeAwareMethod(String name, Object bean) {
-		if (bean instanceof BeanFactoryAware) {
-			((BeanFactoryAware) bean).setBeanFactory(this);
+		if (bean instanceof Aware) {
+			if (bean instanceof BeanFactoryAware) {
+				((BeanFactoryAware) bean).setBeanFactory(this);
+			}
+			if (bean instanceof BeanNameAware) {
+				((BeanNameAware) bean).setBeanName(name);
+			}
 		}
 	}
 }

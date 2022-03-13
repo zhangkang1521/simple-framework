@@ -2,10 +2,13 @@ package org.zk.domain;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zk.simplespring.beans.factory.BeanNameAware;
 import org.zk.simplespring.beans.factory.DisposableBean;
 import org.zk.simplespring.beans.factory.InitializingBean;
+import org.zk.simplespring.context.ApplicationContextAware;
+import org.zk.simplespring.context.support.ApplicationContext;
 
-public class User implements InitializingBean, DisposableBean {
+public class User implements InitializingBean, DisposableBean, BeanNameAware, ApplicationContextAware {
 
 	private static Logger log = LoggerFactory.getLogger(User.class);
 
@@ -46,5 +49,15 @@ public class User implements InitializingBean, DisposableBean {
 	@Override
 	public void destroy() {
 		log.info(">>>> destroy");
+	}
+
+	@Override
+	public void setBeanName(String beanName) {
+		System.out.println(beanName);
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		System.out.println(applicationContext);
 	}
 }

@@ -9,9 +9,9 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/context/spring-aop.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-  <bean id="user" class="org.zk.domain.User">
-        <property name="id" value="100"/>
-        <property name="username" value="zk"/>
+  <bean id="user" class="org.zk.domain.UserFactory">
+<!--        <property name="id" value="100"/>-->
+<!--        <property name="username" value="zk"/>-->
 <!--        <property name="order" ref="order"/>-->
     </bean>
 

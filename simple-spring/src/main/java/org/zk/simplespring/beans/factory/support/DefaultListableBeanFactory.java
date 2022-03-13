@@ -50,9 +50,18 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	 */
 	public void preInstantiateSingletons() {
 		log.info("初始化所有单例bean");
-		for (String beanName : beanDefinitionMap.keySet()) {
-			getBean(beanName);
+		for (Map.Entry<String, BeanDefinition> entry : beanDefinitionMap.entrySet()) {
+			if (isFactoryBean(entry.getValue())) {
+				getBean(BeanFactory.FACTORY_BEAN_PREFIX + entry.getKey());
+			} else {
+				getBean(entry.getKey());
+			}
 		}
+	}
+
+	private boolean isFactoryBean(BeanDefinition beanDefinition) {
+		Class<?> clz = beanDefinition.resolveBeanClass();
+		return FactoryBean.class.isAssignableFrom(clz);
 	}
 
 	public List<String> getBeanNamesForType(Class<?> type) {
@@ -61,8 +70,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			Class<?> clz = beanDefinition.resolveBeanClass();
 			if (FactoryBean.class.isAssignableFrom(clz)) {
 				// 存在死循环 getBean("userDao") -> getBean("sqlSessionFactory") -> getBeanNamesForType(DataSource) -> getBean("&userDao") -> getBean("sqlSessionFactory")
-				FactoryBean factoryBean = (FactoryBean) getBean(BeanFactory.FACTORY_BEAN_PREFIX + beanName);
-				clz = factoryBean.getObjectType();
+				// spring 中 getBeansOfType(Class<T> type, boolean includeNonSingletons, boolean allowEagerInit)
+//				FactoryBean factoryBean = (FactoryBean) getBean(BeanFactory.FACTORY_BEAN_PREFIX + beanName);
+//				clz = factoryBean.getObjectType();
 			}
 			if (type.isAssignableFrom(clz)) {
 				beanNames.add(beanName);
