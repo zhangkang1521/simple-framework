@@ -9,6 +9,7 @@ import org.zk.simplespring.beans.factory.ListableBeanFactory;
 import org.zk.simplespring.beans.factory.config.BeanDefinition;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -87,7 +88,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	public <T> List<T> getBeanList(Class<T> requiredType) {
 		List<String> beanNames = getBeanNamesForType(requiredType);
 		if (CollectionUtils.isEmpty(beanNames)) {
-			throw new RuntimeException("没有找到bean，requiredType:" + requiredType);
+			// throw new RuntimeException("没有找到bean，requiredType:" + requiredType);
+			return Collections.emptyList();
 		}
 		List<T> beans = new ArrayList<>(beanNames.size());
 		for (String beanName : beanNames) {

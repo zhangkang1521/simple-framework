@@ -1,13 +1,10 @@
 package org.zk.simplespring.aop.framework;
 
-import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.zk.simplespring.aop.Advisor;
 import org.zk.simplespring.aop.MethodMatcher;
 import org.zk.simplespring.aop.Pointcut;
 import org.zk.simplespring.aop.PointcutAdvisor;
-import org.zk.simplespring.aop.aspectj.AspectJExpressionPointcut;
-import org.zk.simplespring.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -43,6 +40,7 @@ public class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
 		List<MethodInterceptor> methodInterceptors = new ArrayList<>(advisors.size());
 		for (Advisor advisor : advisors) {
 			if (advisor.getAdvice() instanceof MethodInterceptor) {
+				// 符合切点表达式的才需要加入拦截器链
 				if (match(method, advisor)) {
 					methodInterceptors.add((MethodInterceptor) advisor.getAdvice());
 				}

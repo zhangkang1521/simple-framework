@@ -86,4 +86,11 @@ public class SpringTest {
 		User user = (User) applicationContext.getBean("user");
 	}
 
+	@Test
+	public void testPlaceHolder() {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-placeholder.xml");
+		User user =  (User)applicationContext.getBean("user");
+		Assert.assertEquals("zk", user.getUsername());
+	}
+
 }

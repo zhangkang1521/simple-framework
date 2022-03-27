@@ -3,7 +3,6 @@ package org.zk.aop;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +25,7 @@ public class MyAspect {
         log.info("=== before ===");
     }
 
-    @After("execution(String org.zk.aop.Target.xx(String))")
+    @After("execution(String org.zk.aop.Target.say*(String))")
     public void after() {
         log.info("=== after ===");
     }

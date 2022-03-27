@@ -7,7 +7,7 @@ import org.zk.simplespring.context.ApplicationListener;
 public class SimpleApplicationEventMulticaster extends AbstractApplicationEventMulticaster {
 
     public SimpleApplicationEventMulticaster(BeanFactory beanFactory) {
-        setBeanFactory(beanFactory);
+//        setBeanFactory(beanFactory);
     }
 
     @SuppressWarnings("unchecked")

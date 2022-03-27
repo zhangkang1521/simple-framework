@@ -20,20 +20,11 @@ public class AspectJExpressionPointcut implements Pointcut, MethodMatcher {
 
 	static {
 		SUPPORTED_PRIMITIVES.add(PointcutPrimitive.EXECUTION);
-		SUPPORTED_PRIMITIVES.add(PointcutPrimitive.ARGS);
-		SUPPORTED_PRIMITIVES.add(PointcutPrimitive.REFERENCE);
-		SUPPORTED_PRIMITIVES.add(PointcutPrimitive.THIS);
-		SUPPORTED_PRIMITIVES.add(PointcutPrimitive.TARGET);
-		SUPPORTED_PRIMITIVES.add(PointcutPrimitive.WITHIN);
-		SUPPORTED_PRIMITIVES.add(PointcutPrimitive.AT_ANNOTATION);
-		SUPPORTED_PRIMITIVES.add(PointcutPrimitive.AT_WITHIN);
-		SUPPORTED_PRIMITIVES.add(PointcutPrimitive.AT_ARGS);
-		SUPPORTED_PRIMITIVES.add(PointcutPrimitive.AT_TARGET);
 	}
 
 	public void buildPointcutExpression() {
 		PointcutParser parser = initializePointcutParser();
-		pointcutExpression = parser.parsePointcutExpression(expression,null, new PointcutParameter[0]);
+		pointcutExpression = parser.parsePointcutExpression(expression);
 	}
 
 	private PointcutParser initializePointcutParser() {

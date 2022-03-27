@@ -15,6 +15,7 @@ public class ProxyFactory {
 	}
 
 	private AopProxy createAopProxy() {
+		// TODO 判断用cglib 还是jdk动态代理
 		return new JdkDynamicAopProxy(target, advisors);
 	}
 
