@@ -77,7 +77,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	private void populateBean(String beanName, Object bean, BeanDefinition beanDefinition) {
 		log.info("populateBean {} start", beanName);
 		List<PropertyValue> pvs = beanDefinition.getPropertyValueList();
-		// @Autowired
+		// @Autowired @Value
 		for (BeanPostProcessor bp : getBeanPostProcessors()) {
 			if (bp instanceof InstantiationAwareBeanPostProcessor) {
 				InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;

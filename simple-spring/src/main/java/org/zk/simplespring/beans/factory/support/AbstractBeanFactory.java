@@ -7,6 +7,7 @@ import org.zk.simplespring.beans.factory.FactoryBean;
 import org.zk.simplespring.beans.factory.config.BeanDefinition;
 import org.zk.simplespring.beans.factory.config.BeanPostProcessor;
 import org.zk.simplespring.beans.factory.config.ConfigurableBeanFactory;
+import org.zk.simplespring.util.StringValueResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,23 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/** bean后置处理器 */
 	private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
+	/**
+	 * @Value 解析，占位符替换
+	 */
+	private List<StringValueResolver> embeddedValueResolvers = new ArrayList<>();
 
+
+    public void addEmbeddedValueResolver(StringValueResolver stringValueResolver) {
+		this.embeddedValueResolvers.add(stringValueResolver);
+	}
+
+	public String resolveEmbeddedValue(String value) {
+		String result = value;
+		for (StringValueResolver resolver : this.embeddedValueResolvers) {
+			result = resolver.resolveStringValue(result);
+		}
+		return result;
+	}
 
 	@Override
 	public Object getBean(String name) {

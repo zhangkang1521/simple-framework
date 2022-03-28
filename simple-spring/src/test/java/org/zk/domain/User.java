@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.zk.simplespring.beans.factory.BeanNameAware;
 import org.zk.simplespring.beans.factory.DisposableBean;
 import org.zk.simplespring.beans.factory.InitializingBean;
+import org.zk.simplespring.beans.factory.annotation.Autowired;
+import org.zk.simplespring.beans.factory.annotation.Value;
 import org.zk.simplespring.context.ApplicationContextAware;
 import org.zk.simplespring.context.support.ApplicationContext;
 
@@ -13,8 +15,10 @@ public class User implements InitializingBean, DisposableBean, BeanNameAware, Ap
 	private static Logger log = LoggerFactory.getLogger(User.class);
 
 	private int id;
+
+	@Value("${username}")
 	private String username;
-//	@Autowired
+	@Autowired
 	private Order order;
 
 	public int getId() {

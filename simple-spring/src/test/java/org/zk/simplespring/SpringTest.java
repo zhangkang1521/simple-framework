@@ -93,4 +93,12 @@ public class SpringTest {
 		Assert.assertEquals("zk", user.getUsername());
 	}
 
+	@Test
+	public void testAutowired() {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-autowired.xml");
+		User user =  (User)applicationContext.getBean("user");
+		Assert.assertEquals("zk", user.getUsername());
+		Assert.assertEquals(applicationContext.getBean("order"), user.getOrder());
+	}
+
 }
