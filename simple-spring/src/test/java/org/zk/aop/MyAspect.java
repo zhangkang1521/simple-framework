@@ -22,12 +22,22 @@ public class MyAspect {
 
     @Before("execution(String org.zk.aop.Target.sayHello(String))")
     public void before() {
-        log.info("=== before ===");
+        log.info("=== Target.sayHello before ===");
     }
 
     @After("execution(String org.zk.aop.Target.say*(String))")
     public void after() {
-        log.info("=== after ===");
+        log.info("=== Target.say* after ===");
+    }
+
+    @Before("execution(String org.zk.aop.TargetImpl2.sayHello(String))")
+    public void before2() {
+        log.info("=== before sayHello ===");
+    }
+
+    @After("execution(String org.zk.aop.TargetImpl2.say*(String))")
+    public void after2() {
+        log.info("=== after say* ===");
     }
 
 

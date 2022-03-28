@@ -103,6 +103,7 @@ public abstract class AbstractAdvisorAutoProxyCreator implements BeanPostProcess
 		if (advisor instanceof PointcutAdvisor) {
 			Pointcut pointcut = ((PointcutAdvisor) advisor).getPointcut();
 			MethodMatcher methodMatcher = pointcut.getMethodMatcher();
+			// 接口方法满足
 			Class[] interfaces = aClass.getInterfaces();
 			for (Class interface_ : interfaces) {
 				Method[] methods = interface_.getDeclaredMethods();
@@ -112,6 +113,14 @@ public abstract class AbstractAdvisorAutoProxyCreator implements BeanPostProcess
 					}
 				}
 			}
+			// 实现类方法满足
+			Method[] methods = aClass.getDeclaredMethods();
+			for (Method method : methods) {
+				if (methodMatcher.matches(method, aClass)) {
+					return true;
+				}
+			}
+
 			return false;
 		} else {
 			return true;

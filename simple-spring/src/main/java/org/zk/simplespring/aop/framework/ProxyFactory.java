@@ -1,13 +1,6 @@
 package org.zk.simplespring.aop.framework;
 
-import org.zk.simplespring.aop.Advisor;
-
-import java.util.List;
-
-public class ProxyFactory {
-
-	private Object target;
-	private List<Advisor> advisors;
+public class ProxyFactory extends AdvisedSupport {
 
 
 	public Object getProxy() {
@@ -15,15 +8,12 @@ public class ProxyFactory {
 	}
 
 	private AopProxy createAopProxy() {
-		// TODO 判断用cglib 还是jdk动态代理
-		return new JdkDynamicAopProxy(target, advisors);
+		Class<?>[] interfaces = getTarget().getClass().getInterfaces();
+		if (interfaces.length > 0) {
+			return new JdkDynamicAopProxy(this);
+		} else {
+			return new CglibAopProxy(this);
+		}
 	}
 
-	public void setTarget(Object target) {
-		this.target = target;
-	}
-
-	public void setAdvisors(List<Advisor> advisors) {
-		this.advisors = advisors;
-	}
 }

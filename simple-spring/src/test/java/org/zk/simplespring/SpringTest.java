@@ -3,6 +3,7 @@ package org.zk.simplespring;
 import org.junit.Assert;
 import org.junit.Test;
 import org.zk.aop.Target;
+import org.zk.aop.TargetImpl2;
 import org.zk.config.AppConfig;
 import org.zk.domain.Order;
 import org.zk.domain.User;
@@ -60,9 +61,17 @@ public class SpringTest {
 	}
 
 	@Test
-	public void testAop() {
+	public void testAopJdkDynamic() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-aop.xml");
 		Target target = (Target)applicationContext.getBean("target");
+		target.sayHello("zk");
+		target.sayWorld("zk");
+	}
+
+	@Test
+	public void testAopCglib() {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-aop-cglib.xml");
+		TargetImpl2 target = (TargetImpl2)applicationContext.getBean("target");
 		target.sayHello("zk");
 		target.sayWorld("zk");
 	}
