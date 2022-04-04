@@ -1,12 +1,12 @@
 package org.zk.simple.spring.web.context.support;
 
 import org.zk.simple.spring.web.context.WebApplicationContext;
-import org.zk.simplespring.context.support.AbstractApplicationContext;
-import org.zk.simplespring.context.support.AbstractRefreshableConfigApplicationContext;
+import org.zk.simplespring.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletContext;
 
-public class XmlWebApplicationContext extends AbstractRefreshableConfigApplicationContext implements WebApplicationContext {
+// TODO 改为继承 AbstractRefreshableConfigApplicationContext
+public class XmlWebApplicationContext extends ClassPathXmlApplicationContext implements WebApplicationContext {
 
 	private ServletContext servletContext;
 

@@ -18,7 +18,9 @@
 
     <bean id="autowiredAnnotationBeanPostProcessor" class="org.zk.simplespring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
 
-    <bean id="order" class="org.zk.domain.Order"></bean>
+
+    <bean id="targetInjectService" class="org.zk.aop.TargetInjectService"></bean>
+
 </beans>
 
 

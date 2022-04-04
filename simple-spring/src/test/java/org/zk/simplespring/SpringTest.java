@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.zk.aop.Target;
 import org.zk.aop.TargetImpl2;
+import org.zk.aop.TargetInjectService;
 import org.zk.config.AppConfig;
 import org.zk.domain.Order;
 import org.zk.domain.User;
@@ -13,6 +14,8 @@ import org.zk.simplespring.context.annotation.AnnotationConfigApplicationContext
 import org.zk.simplespring.context.event.ContextClosedEvent;
 import org.zk.simplespring.context.support.ApplicationContext;
 import org.zk.simplespring.context.support.ClassPathXmlApplicationContext;
+
+import java.lang.reflect.Method;
 
 public class SpringTest {
 
@@ -69,11 +72,28 @@ public class SpringTest {
 	}
 
 	@Test
-	public void testAopCglib() {
+	public void testAopAutowired() {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-aop-autowired.xml");
+		TargetInjectService target = (TargetInjectService)applicationContext.getBean("targetInjectService");
+		System.out.println(target);
+	}
+
+	@Test
+	public void testAopAutowired2() {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-aop-autowired-2.xml");
+		TargetImpl2 target = (TargetImpl2)applicationContext.getBean("target");
+		System.out.println(target);
+	}
+
+	@Test
+	public void testAopCglib() throws Exception {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-aop-cglib.xml");
 		TargetImpl2 target = (TargetImpl2)applicationContext.getBean("target");
+		Method method = TargetImpl2.class.getDeclaredMethod("sayTest");
+		method.setAccessible(true);
+		method.invoke(target);
 		target.sayHello("zk");
-		target.sayWorld("zk");
+//		target.sayWorld("zk");
 	}
 
 	@Test

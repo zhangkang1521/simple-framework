@@ -12,13 +12,16 @@
     <!-- AnnotationAwareAspectJAutoProxyCreator -->
     <aop:aspectj-autoproxy/>
 
+    <!-- 测试代理类注入其他对象 -->
     <bean id="target" class="org.zk.aop.TargetImpl2"></bean>
 
     <bean id="myAspect" class="org.zk.aop.MyAspect"></bean>
 
     <bean id="autowiredAnnotationBeanPostProcessor" class="org.zk.simplespring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
 
+
     <bean id="order" class="org.zk.domain.Order"></bean>
+
 </beans>
 
 
