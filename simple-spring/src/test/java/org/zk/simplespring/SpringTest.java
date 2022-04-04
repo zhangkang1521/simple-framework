@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.zk.aop.Target;
 import org.zk.aop.TargetImpl2;
 import org.zk.aop.TargetInjectService;
+import org.zk.circulate.A;
+import org.zk.circulate.B;
 import org.zk.config.AppConfig;
 import org.zk.domain.Order;
 import org.zk.domain.User;
@@ -128,6 +130,13 @@ public class SpringTest {
 		User user =  (User)applicationContext.getBean("user");
 		Assert.assertEquals("zk", user.getUsername());
 		Assert.assertEquals(applicationContext.getBean("order"), user.getOrder());
+	}
+
+	@Test
+	public void testCirculate() {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-circulate.xml");
+		A a =  (A)applicationContext.getBean("a");
+		B b =  (B)applicationContext.getBean("b");
 	}
 
 }

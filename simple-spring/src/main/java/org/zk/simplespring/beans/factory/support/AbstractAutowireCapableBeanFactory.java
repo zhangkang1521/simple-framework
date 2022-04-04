@@ -50,6 +50,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			bean = SpringBeanUtils.instantiateClass(clz);
 		}
 
+		// 一级缓存解决循环依赖
+		addSingleton(beanName, bean);
+
 		// 依赖注入
 		populateBean(beanName, bean, beanDefinition);
 		// 初始化
@@ -59,7 +62,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
 
 		// 放入缓存
-		addSingleton(beanName, bean);
+		// addSingleton(beanName, bean);
 		return bean;
 	}
 
