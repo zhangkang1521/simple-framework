@@ -2,11 +2,13 @@ package org.zk.dubbo.rpc;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * Rpc调用所需字段组合
  */
 @Data
-public class RpcInvocation {
+public class RpcInvocation implements Serializable {
 
     /**
      * 完整类名
