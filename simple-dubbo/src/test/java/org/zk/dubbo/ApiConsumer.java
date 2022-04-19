@@ -13,10 +13,11 @@ public class ApiConsumer {
 
         DemoService demoService = referenceConfig.get();
 
-        String msg = demoService.sayHello("zhangkang");
+        String msg = demoService.sayHello("a");
         System.out.println("服务端返回：" + msg);
-//        String msg2 = demoService.sayHello("zhangkang2");
-//        System.out.println("服务端返回：" + msg2);
+
+        String msg2 = demoService.sayHello("b");
+        System.out.println("服务端返回：" + msg2);
 //        System.in.read();
     }
 }

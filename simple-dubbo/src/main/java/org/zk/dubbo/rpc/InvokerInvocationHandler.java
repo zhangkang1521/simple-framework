@@ -1,6 +1,7 @@
 package org.zk.dubbo.rpc;
 
 import org.zk.dubbo.config.ReferenceConfig;
+import org.zk.dubbo.remoting.exchange.Request;
 import org.zk.dubbo.remoting.transport.netty4.NettyClient;
 import org.zk.dubbo.remoting.transport.netty4.NettyClientHandler;
 
@@ -29,15 +30,15 @@ public class InvokerInvocationHandler implements InvocationHandler {
             return method.invoke(this, args);
         }
 
+        Request request = new Request();
         RpcInvocation rpcInvocation = new RpcInvocation();
         rpcInvocation.setClassName(referenceConfig.getInterfaceClass().getName());
         rpcInvocation.setMethodName(method.getName());
         rpcInvocation.setParameterTypes(method.getParameterTypes());
         rpcInvocation.setValues(args);
+        request.setRpcInvocation(rpcInvocation);
 
+        return nettyClient.send(request).get();
 
-        nettyClient.send(rpcInvocation);
-
-        return nettyClientHandler.getResponse();
     }
 }

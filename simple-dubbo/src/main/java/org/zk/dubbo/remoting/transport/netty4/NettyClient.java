@@ -2,7 +2,6 @@ package org.zk.dubbo.remoting.transport.netty4;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -13,7 +12,8 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.zk.dubbo.config.ReferenceConfig;
-import org.zk.dubbo.rpc.RpcInvocation;
+import org.zk.dubbo.remoting.exchange.Request;
+import org.zk.dubbo.remoting.exchange.support.DefaultFuture;
 
 @Slf4j
 public class NettyClient {
@@ -52,18 +52,15 @@ public class NettyClient {
         }
     }
 
-    public void send(RpcInvocation rpcInvocation) {
+    public DefaultFuture send(Request request) {
+        DefaultFuture defaultFuture = new DefaultFuture(request.getMId());
         try {
-            log.info("发送请求到服务端, {}", rpcInvocation);
-            // 如何拿到返回值
-            ChannelFuture future = this.channel.writeAndFlush(rpcInvocation);
-            future.await(3000);
-            // 没有这句，还没收到服务端消息就返回了
-            // 放开这句，2次请求，只有第一次请求发送出去了
-            channel.closeFuture().sync();
+            log.info("发送请求到服务端, {}", request);
+            channel.writeAndFlush(request);
         } catch (Throwable e) {
             e.printStackTrace();
         }
+        return defaultFuture;
     }
 
 
