@@ -11,19 +11,18 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.extern.slf4j.Slf4j;
-import org.zk.dubbo.config.ReferenceConfig;
+import org.zk.dubbo.common.URL;
 import org.zk.dubbo.remoting.exchange.Request;
 import org.zk.dubbo.remoting.exchange.support.DefaultFuture;
 
 @Slf4j
 public class NettyClient {
 
-    private ReferenceConfig referenceConfig;
+    private URL url;
 
     private Channel channel;
 
-    public NettyClient(ReferenceConfig referenceConfig, NettyClientHandler nettyClientHandler) {
-        this.referenceConfig = referenceConfig;
+    public NettyClient(URL url, NettyClientHandler nettyClientHandler) {
 
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -39,8 +38,8 @@ public class NettyClient {
                                     .addLast(nettyClientHandler);
                         }
                     });
-            this.channel = bootstrap.connect(referenceConfig.getHost(), referenceConfig.getPort()).sync().channel();
-            log.info("connect to server success, host:{}, port:{}", referenceConfig.getHost(), referenceConfig.getPort());
+            this.channel = bootstrap.connect(url.getHost(), url.getPort()).sync().channel();
+            log.info("connect to server success, host:{}, port:{}", url.getHost(), url.getPort());
 
 //            this.channel.writeAndFlush(rpcInvocation);
 //            this.channel.writeAndFlush(rpcInvocation);

@@ -11,20 +11,26 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.extern.slf4j.Slf4j;
+import org.zk.dubbo.common.URL;
+import org.zk.dubbo.rpc.Exporter;
 
 import java.util.Map;
 
 @Slf4j
 public class NettyServer {
 
-    private int port = 20888;
+    private URL url;
+
+    private int port;
 
     /**
      * 服务暴露
      */
-    private Map<String, Object> exporterMap;
+    private Map<String, Exporter<?>> exporterMap;
 
-    public NettyServer(Map<String, Object> exporterMap) {
+    public NettyServer(URL url, Map<String, Exporter<?>> exporterMap) {
+        this.url = url;
+        this.port = url.getPort();
         this.exporterMap = exporterMap;
     }
 

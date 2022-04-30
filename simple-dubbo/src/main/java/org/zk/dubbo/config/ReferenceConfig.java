@@ -1,6 +1,9 @@
 package org.zk.dubbo.config;
 
 import lombok.Data;
+import org.zk.dubbo.common.URL;
+import org.zk.dubbo.rpc.Invoker;
+import org.zk.dubbo.rpc.protocol.dubbo.DubboProtocol;
 import org.zk.dubbo.rpc.proxy.jdk.JdkProxyFactory;
 
 /**
@@ -10,16 +13,18 @@ import org.zk.dubbo.rpc.proxy.jdk.JdkProxyFactory;
 @Data
 public class ReferenceConfig<T> {
 
-    private String host;
-
-    private Integer port;
-
-//    private String url;
+    private String url;
 
     private Class<T> interfaceClass;
 
 
     public T get() {
-        return new JdkProxyFactory().getProxy(this);
+        // 1. 使用协议拿到Invoker
+        URL url = URL.valueOf(this.url);
+        DubboProtocol dubboProtocol = new DubboProtocol();
+        Invoker<T> invoker = dubboProtocol.refer(interfaceClass, url);
+
+        // 2. 创建代理
+        return new JdkProxyFactory().getProxy(invoker, this);
     }
 }

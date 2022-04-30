@@ -1,9 +1,13 @@
 package org.zk.dubbo.rpc.proxy.jdk;
 
+import org.zk.dubbo.common.URL;
 import org.zk.dubbo.config.ReferenceConfig;
+import org.zk.dubbo.rpc.Invoker;
 import org.zk.dubbo.rpc.InvokerInvocationHandler;
 import org.zk.dubbo.rpc.ProxyFactory;
+import org.zk.dubbo.rpc.RpcInvocation;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
@@ -13,9 +17,29 @@ public class JdkProxyFactory implements ProxyFactory {
 
 
     @Override
-    public <T> T getProxy(ReferenceConfig<T> referenceConfig) {
+    public <T> T getProxy(Invoker<T> invoker, ReferenceConfig<T> referenceConfig) {
         return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                 new Class[]{referenceConfig.getInterfaceClass()},
-                new InvokerInvocationHandler(referenceConfig));
+                new InvokerInvocationHandler(invoker, referenceConfig));
+    }
+
+    public <T> Invoker<T> getInvoker(T ref, Class<T> type, URL url) {
+        return new Invoker<T>() {
+
+            @Override
+            public URL getUrl() {
+                return url;
+            }
+
+            @Override
+            public Object invoke(RpcInvocation invocation) {
+                try {
+                    Method method = ref.getClass().getDeclaredMethod(invocation.getMethodName(), invocation.getParameterTypes());
+                    return method.invoke(ref, invocation.getValues());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
     }
 }

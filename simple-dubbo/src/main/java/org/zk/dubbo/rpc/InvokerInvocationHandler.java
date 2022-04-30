@@ -1,9 +1,6 @@
 package org.zk.dubbo.rpc;
 
 import org.zk.dubbo.config.ReferenceConfig;
-import org.zk.dubbo.remoting.exchange.Request;
-import org.zk.dubbo.remoting.transport.netty4.NettyClient;
-import org.zk.dubbo.remoting.transport.netty4.NettyClientHandler;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -13,14 +10,14 @@ import java.lang.reflect.Method;
  */
 public class InvokerInvocationHandler implements InvocationHandler {
 
-    private ReferenceConfig referenceConfig;
-    private NettyClient nettyClient;
-    private NettyClientHandler nettyClientHandler;
 
-    public InvokerInvocationHandler(ReferenceConfig referenceConfig) {
-        this.referenceConfig = referenceConfig;
-        this.nettyClientHandler = new NettyClientHandler();
-        this.nettyClient = new NettyClient(referenceConfig, nettyClientHandler);
+    private Invoker<?> invoker;
+
+    private ReferenceConfig<?> referenceConfig;
+
+    public InvokerInvocationHandler(Invoker<?> invoker, ReferenceConfig<?> referenceConfig) {
+       this.invoker = invoker;
+       this.referenceConfig = referenceConfig;
     }
 
     // 代理入口
@@ -29,16 +26,12 @@ public class InvokerInvocationHandler implements InvocationHandler {
         if (method.getDeclaringClass() == Object.class) {
             return method.invoke(this, args);
         }
-
-        Request request = new Request();
+        // 客户端发起调用
         RpcInvocation rpcInvocation = new RpcInvocation();
         rpcInvocation.setClassName(referenceConfig.getInterfaceClass().getName());
         rpcInvocation.setMethodName(method.getName());
         rpcInvocation.setParameterTypes(method.getParameterTypes());
         rpcInvocation.setValues(args);
-        request.setRpcInvocation(rpcInvocation);
-
-        return nettyClient.send(request).get();
-
+        return invoker.invoke(rpcInvocation);
     }
 }

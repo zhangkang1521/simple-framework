@@ -7,8 +7,7 @@ public class ApiConsumer {
 
     public static void main(String[] args) throws Exception {
         ReferenceConfig<DemoService> referenceConfig = new ReferenceConfig<>();
-        referenceConfig.setHost("localhost");
-        referenceConfig.setPort(20888);
+        referenceConfig.setUrl("dubbo://localhost:20888");
         referenceConfig.setInterfaceClass(DemoService.class);
 
         DemoService demoService = referenceConfig.get();
