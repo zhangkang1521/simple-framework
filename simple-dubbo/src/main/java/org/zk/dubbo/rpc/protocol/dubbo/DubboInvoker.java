@@ -9,10 +9,12 @@ import org.zk.dubbo.rpc.RpcInvocation;
 
 public class DubboInvoker<T> implements Invoker<T> {
 
+    private Class<T> type;
     private URL url;
     private NettyClient nettyClient;
 
-    public DubboInvoker(URL url) {
+    public DubboInvoker(Class<T> type, URL url) {
+        this.type = type;
         this.url = url;
         this.nettyClient = new NettyClient(url, new NettyClientHandler());
     }
@@ -23,6 +25,11 @@ public class DubboInvoker<T> implements Invoker<T> {
         request.setRpcInvocation(invocation);
         // dubbo协议使用netty
         return nettyClient.send(request).get();
+    }
+
+    @Override
+    public Class<T> getInterface() {
+        return type;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package org.zk.dubbo.rpc;
 
-import org.zk.dubbo.config.ReferenceConfig;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -13,11 +11,8 @@ public class InvokerInvocationHandler implements InvocationHandler {
 
     private Invoker<?> invoker;
 
-    private ReferenceConfig<?> referenceConfig;
-
-    public InvokerInvocationHandler(Invoker<?> invoker, ReferenceConfig<?> referenceConfig) {
+    public InvokerInvocationHandler(Invoker<?> invoker) {
        this.invoker = invoker;
-       this.referenceConfig = referenceConfig;
     }
 
     // 代理入口
@@ -28,7 +23,7 @@ public class InvokerInvocationHandler implements InvocationHandler {
         }
         // 客户端发起调用
         RpcInvocation rpcInvocation = new RpcInvocation();
-        rpcInvocation.setClassName(referenceConfig.getInterfaceClass().getName());
+        rpcInvocation.setClassName(invoker.getUrl().getPath());
         rpcInvocation.setMethodName(method.getName());
         rpcInvocation.setParameterTypes(method.getParameterTypes());
         rpcInvocation.setValues(args);

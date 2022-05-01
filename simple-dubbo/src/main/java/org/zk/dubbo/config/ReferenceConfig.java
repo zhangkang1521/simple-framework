@@ -21,10 +21,11 @@ public class ReferenceConfig<T> {
     public T get() {
         // 1. 使用协议拿到Invoker
         URL url = URL.valueOf(this.url);
+        url.setPath(interfaceClass.getName());
         DubboProtocol dubboProtocol = new DubboProtocol();
         Invoker<T> invoker = dubboProtocol.refer(interfaceClass, url);
 
         // 2. 创建代理
-        return new JdkProxyFactory().getProxy(invoker, this);
+        return new JdkProxyFactory().getProxy(invoker);
     }
 }

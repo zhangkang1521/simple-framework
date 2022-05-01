@@ -20,7 +20,7 @@ public class DubboProtocol implements Protocol {
 
     @Override
     public <T> Invoker<T> refer(Class<T> type, URL url) {
-        return new DubboInvoker<>(url);
+        return new DubboInvoker<>(type, url);
     }
 
     @Override

@@ -14,4 +14,10 @@ public interface Invoker<T> extends Node {
      * @return
      */
     Object invoke(RpcInvocation invocation);
+
+    /**
+     * 获取泛型类
+     * @return
+     */
+    Class<T> getInterface();
 }

@@ -1,7 +1,6 @@
 package org.zk.dubbo.rpc.proxy.jdk;
 
 import org.zk.dubbo.common.URL;
-import org.zk.dubbo.config.ReferenceConfig;
 import org.zk.dubbo.rpc.Invoker;
 import org.zk.dubbo.rpc.InvokerInvocationHandler;
 import org.zk.dubbo.rpc.ProxyFactory;
@@ -17,19 +16,14 @@ public class JdkProxyFactory implements ProxyFactory {
 
 
     @Override
-    public <T> T getProxy(Invoker<T> invoker, ReferenceConfig<T> referenceConfig) {
+    public <T> T getProxy(Invoker<T> invoker) {
         return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
-                new Class[]{referenceConfig.getInterfaceClass()},
-                new InvokerInvocationHandler(invoker, referenceConfig));
+                new Class[]{invoker.getInterface()},
+                new InvokerInvocationHandler(invoker));
     }
 
     public <T> Invoker<T> getInvoker(T ref, Class<T> type, URL url) {
         return new Invoker<T>() {
-
-            @Override
-            public URL getUrl() {
-                return url;
-            }
 
             @Override
             public Object invoke(RpcInvocation invocation) {
@@ -39,6 +33,16 @@ public class JdkProxyFactory implements ProxyFactory {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+            }
+
+            @Override
+            public URL getUrl() {
+                return url;
+            }
+
+            @Override
+            public Class<T> getInterface() {
+                return type;
             }
         };
     }

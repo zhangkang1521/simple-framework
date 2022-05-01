@@ -29,7 +29,7 @@ public class URL {
     private int port;
 
     /**
-     * 服务名
+     * 服务名，例如org.zk.dubbo.DemoService
      */
     private String path;
 
