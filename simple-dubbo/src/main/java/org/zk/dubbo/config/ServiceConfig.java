@@ -6,7 +6,7 @@ import org.zk.dubbo.common.URL;
 import org.zk.dubbo.rpc.Invoker;
 import org.zk.dubbo.rpc.Protocol;
 import org.zk.dubbo.rpc.ProxyFactory;
-import org.zk.dubbo.rpc.protocol.dubbo.DubboProtocol;
+import org.zk.dubbo.rpc.protocol.injvm.InjvmProtocol;
 import org.zk.dubbo.rpc.proxy.jdk.JdkProxyFactory;
 
 import java.util.Map;
@@ -46,7 +46,8 @@ public class ServiceConfig<T> {
         Invoker<?> invoker = proxyFactory.getInvoker(ref, (Class) interfaceClass, url);
 
         // 2.通过协议进行暴露
-        Protocol protocol = new DubboProtocol();
+        // TODO
+        Protocol protocol = new InjvmProtocol();
         protocol.export(invoker);
     }
 }

@@ -3,7 +3,8 @@ package org.zk.dubbo.config;
 import lombok.Data;
 import org.zk.dubbo.common.URL;
 import org.zk.dubbo.rpc.Invoker;
-import org.zk.dubbo.rpc.protocol.dubbo.DubboProtocol;
+import org.zk.dubbo.rpc.Protocol;
+import org.zk.dubbo.rpc.protocol.injvm.InjvmProtocol;
 import org.zk.dubbo.rpc.proxy.jdk.JdkProxyFactory;
 
 /**
@@ -22,8 +23,9 @@ public class ReferenceConfig<T> {
         // 1. 使用协议拿到Invoker
         URL url = URL.valueOf(this.url);
         url.setPath(interfaceClass.getName());
-        DubboProtocol dubboProtocol = new DubboProtocol();
-        Invoker<T> invoker = dubboProtocol.refer(interfaceClass, url);
+        // TODO
+        Protocol protocol = new InjvmProtocol();
+        Invoker<T> invoker = protocol.refer(interfaceClass, url);
 
         // 2. 创建代理
         return new JdkProxyFactory().getProxy(invoker);
