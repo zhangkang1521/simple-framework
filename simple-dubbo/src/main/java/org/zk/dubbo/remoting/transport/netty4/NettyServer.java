@@ -7,9 +7,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.zk.dubbo.common.URL;
 import org.zk.dubbo.rpc.Exporter;
@@ -35,6 +32,8 @@ public class NettyServer {
     }
 
     public void start() {
+        NettyCodecAdapter nettyCodecAdapter = new NettyCodecAdapter();
+
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -45,8 +44,10 @@ public class NettyServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline()
-                                    .addLast("encoder", new ObjectEncoder())
-                                    .addLast("decoder", new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)))
+//                                    .addLast("encoder", new ObjectEncoder())
+//                                    .addLast("decoder", new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)))
+                                    .addLast("encoder", nettyCodecAdapter.getEncoder())
+                                    .addLast("decoder", nettyCodecAdapter.getDecoder())
                                     .addLast(new NettyServerHandler(exporterMap));
                         }
                     });

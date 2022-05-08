@@ -4,7 +4,7 @@ import lombok.Data;
 import org.zk.dubbo.common.URL;
 import org.zk.dubbo.rpc.Invoker;
 import org.zk.dubbo.rpc.Protocol;
-import org.zk.dubbo.rpc.protocol.injvm.InjvmProtocol;
+import org.zk.dubbo.rpc.protocol.dubbo.DubboProtocol;
 import org.zk.dubbo.rpc.proxy.jdk.JdkProxyFactory;
 
 /**
@@ -24,7 +24,7 @@ public class ReferenceConfig<T> {
         URL url = URL.valueOf(this.url);
         url.setPath(interfaceClass.getName());
         // TODO
-        Protocol protocol = new InjvmProtocol();
+        Protocol protocol = new DubboProtocol();
         Invoker<T> invoker = protocol.refer(interfaceClass, url);
 
         // 2. 创建代理

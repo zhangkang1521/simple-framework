@@ -28,6 +28,16 @@
             <version>1.18.20</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>hessian-lite</artifactId>
+            <version>3.2.4</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+            <version>4.0.62</version>
+        </dependency>-->
     </dependencies>
 
 </project>

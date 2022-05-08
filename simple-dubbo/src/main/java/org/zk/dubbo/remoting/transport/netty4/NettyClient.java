@@ -7,9 +7,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.zk.dubbo.common.URL;
 import org.zk.dubbo.remoting.exchange.Request;
@@ -24,6 +21,8 @@ public class NettyClient {
 
     public NettyClient(URL url, NettyClientHandler nettyClientHandler) {
 
+        NettyCodecAdapter nettyCodecAdapter = new NettyCodecAdapter();
+
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap();
@@ -33,8 +32,10 @@ public class NettyClient {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline()
-                                    .addLast("encoder", new ObjectEncoder())
-                                    .addLast("decoder", new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)))
+                                    .addLast("encoder", nettyCodecAdapter.getEncoder())
+                                    .addLast("decoder", nettyCodecAdapter.getDecoder())
+//                                    .addLast("encoder", new ObjectEncoder())
+//                                    .addLast("decoder", new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)))
                                     .addLast(nettyClientHandler);
                         }
                     });

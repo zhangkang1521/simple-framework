@@ -1,11 +1,25 @@
 package org.zk.dubbo;
 
+import org.junit.Test;
 import org.zk.dubbo.api.DemoService;
+import org.zk.dubbo.api.DemoServiceImpl;
 import org.zk.dubbo.config.ReferenceConfig;
+import org.zk.dubbo.config.ServiceConfig;
 
-public class ApiConsumer {
+public class ApiTest {
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void testProvider() {
+        ServiceConfig<DemoService> service = new ServiceConfig<DemoService>();
+        service.setInterfaceClass(DemoService.class);
+        service.setRef(new DemoServiceImpl());
+
+        // 暴露服务
+        service.export();
+    }
+
+    @Test
+    public void testConsumer() throws Exception {
         ReferenceConfig<DemoService> referenceConfig = new ReferenceConfig<>();
         referenceConfig.setUrl("dubbo://localhost:20888");
         referenceConfig.setInterfaceClass(DemoService.class);
@@ -17,6 +31,8 @@ public class ApiConsumer {
 
         String msg2 = demoService.sayHello("b");
         System.out.println("服务端返回：" + msg2);
-//        System.in.read();
+
+        System.in.read();
     }
+
 }
