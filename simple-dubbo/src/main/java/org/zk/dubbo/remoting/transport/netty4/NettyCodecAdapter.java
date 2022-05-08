@@ -1,16 +1,14 @@
 package org.zk.dubbo.remoting.transport.netty4;
 
-import com.alibaba.com.caucho.hessian.io.Hessian2Input;
-import com.alibaba.com.caucho.hessian.io.Hessian2Output;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufOutputStream;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.MessageToByteEncoder;
 import lombok.Getter;
+import org.zk.dubbo.remoting.Codec2;
+import org.zk.dubbo.rpc.protocol.dubbo.DubboCodec;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
 /**
@@ -28,7 +26,8 @@ final class NettyCodecAdapter {
 
     private final ChannelHandler decoder = new InternalDecoder();
 
-//    private final Codec2 codec;
+    private final Codec2 codec = new DubboCodec();
+
 
 
     private class InternalEncoder extends MessageToByteEncoder {
@@ -36,18 +35,7 @@ final class NettyCodecAdapter {
 
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-            // msg可能是Request/Response
-            int startIdx = out.writerIndex();
-            ByteBufOutputStream bout = new ByteBufOutputStream(out);
-            bout.write(LENGTH_PLACEHOLDER);
-            //
-            Hessian2Output oout = new Hessian2Output(bout);
-            oout.writeObject(msg);
-            oout.flush();
-            oout.close();
-
-            int endIdx = out.writerIndex();
-            out.setInt(startIdx, endIdx - startIdx - 4);
+            codec.encode(out, msg);
         }
     }
 
@@ -55,14 +43,8 @@ final class NettyCodecAdapter {
 
         @Override
         protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-            int length = in.readInt();
-            byte[] bytes = new byte[length];
-            in.readBytes(bytes);
-
-            Hessian2Input hessian2Input = new Hessian2Input(new ByteArrayInputStream(bytes));
-            Object obj =  hessian2Input.readObject();
-            hessian2Input.close();
-            out.add(obj);
+           Object obj = codec.decode(in);
+           out.add(obj);
         }
     }
 }
