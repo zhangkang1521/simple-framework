@@ -13,4 +13,14 @@ public class URLTest {
         assertEquals("localhost", url.getHost());
         assertEquals(20881, url.getPort());
     }
+
+    @Test
+    public void toFullString() {
+        URL url = URL.valueOf("registry://localhost:20881");
+        url.setPath("org.zk.dubbo.registry.RegistryService");
+        url.addParameter(Constants.EXPORT_KEY, "dubbo://localhost:20881/org.zk.DemoService");
+        url.addParameter("test", "xx");
+        // registry://localhost:20881/org.zk.dubbo.registry.RegistryService?test=xx&export=dubbo://localhost:20881/org.zk.DemoService
+        System.out.println(url.toFullString());
+    }
 }

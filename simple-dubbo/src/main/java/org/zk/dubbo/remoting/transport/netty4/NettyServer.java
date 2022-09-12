@@ -52,14 +52,15 @@ public class NettyServer {
                         }
                     });
 
-            ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(port);
             log.info("Netty Server started at port {}",  port);
-            channelFuture.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
+            // 阻塞线程
+            // channelFuture.channel().closeFuture().sync();
+            // 不会阻塞线程
+            channelFuture.syncUninterruptibly();
+        }  finally {
+//            bossGroup.shutdownGracefully();
+//            workerGroup.shutdownGracefully();
         }
     }
 }

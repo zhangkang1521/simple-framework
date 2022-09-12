@@ -10,5 +10,6 @@
     </root>
 
     <logger name="io.netty" level="warn"/>
+    <logger name="org.apache" level="warn"/>
 
 </configuration>
