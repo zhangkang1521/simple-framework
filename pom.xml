@@ -18,6 +18,7 @@
         <module>simple-demo</module>
         <module>simple-mybatis-spring-boot-starter</module>
         <module>simple-dubbo</module>
+        <module>simple-rocketmq</module>
     </modules>
 
 
@@ -76,6 +77,11 @@
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
         </dependency>
     </dependencies>
 
