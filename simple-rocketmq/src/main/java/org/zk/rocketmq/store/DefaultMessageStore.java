@@ -38,7 +38,8 @@ public class DefaultMessageStore {
 
         log.info("reputMessageService started!");
         this.reputMessageService = new ReputMessageService();
-        new Thread(this.reputMessageService).start();
+        // TODO zk
+        // new Thread(this.reputMessageService).start();
     }
 
     public void putMessage(Message message) {

@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author zhangkang
  * @date 2023/2/26 20:49
  */
-public class Message {
+public class Message implements Serializable {
 
     /**
      * 主体
