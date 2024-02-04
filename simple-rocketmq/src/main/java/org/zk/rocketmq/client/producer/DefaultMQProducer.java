@@ -1,6 +1,7 @@
 package org.zk.rocketmq.client.producer;
 
 import org.zk.rocketmq.common.message.Message;
+import org.zk.rocketmq.common.protocol.RequestCode;
 import org.zk.rocketmq.remoting.netty.NettyRemotingClient;
 import org.zk.rocketmq.remoting.protocol.RemotingCommand;
 
@@ -19,7 +20,9 @@ public class DefaultMQProducer {
 
     public void send(Message message) {
         RemotingCommand remotingCommand = new RemotingCommand();
-        remotingCommand.setCode(301);
+        remotingCommand.setCode(RequestCode.SEND_MSG);
+        remotingCommand.getHeader().put("topic", message.getTopic());
+        remotingCommand.setBody(message.getBody());
         nettyRemotingClient.invokeSync(remotingCommand);
     }
 

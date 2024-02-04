@@ -1,18 +1,20 @@
 package org.zk.rocketmq.remoting.netty;
 
-import cn.hutool.core.util.SerializeUtil;
-import cn.hutool.json.JSON;
-import cn.hutool.json.JSONUtil;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.zk.rocketmq.common.message.Message;
 import org.zk.rocketmq.remoting.protocol.RemotingCommand;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhangkang
@@ -20,6 +22,10 @@ import org.zk.rocketmq.remoting.protocol.RemotingCommand;
  */
 @Slf4j
 public class NettyRemotingServer {
+
+    private Map<Integer, NettyRequestProcessor> processorTable = new HashMap<>();
+
+    private ExecutorService sendMessageExecutor = new ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1000));
 
     @SneakyThrows
     public void start() {
@@ -62,9 +68,19 @@ public class NettyRemotingServer {
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, RemotingCommand remotingCommand) throws Exception {
             log.info("收到客户端请求 {}", remotingCommand);
-
-            remotingCommand.setOpaque(9999);
-            ctx.writeAndFlush(remotingCommand);
+            NettyRequestProcessor nettyRequestProcessor = processorTable.get(remotingCommand.getCode());
+            if (nettyRequestProcessor == null) {
+                log.error("request code not support");
+                return;
+            }
+            sendMessageExecutor.submit(() -> {
+                nettyRequestProcessor.processRequest(ctx, remotingCommand);
+                ctx.writeAndFlush(remotingCommand);
+            });
         }
+    }
+
+    public void registerProcessor(int requestCode, NettyRequestProcessor nettyRequestProcessor) {
+        this.processorTable.put(requestCode, nettyRequestProcessor);
     }
 }

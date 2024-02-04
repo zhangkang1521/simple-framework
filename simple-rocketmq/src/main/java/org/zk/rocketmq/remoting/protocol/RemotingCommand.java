@@ -3,6 +3,8 @@ package org.zk.rocketmq.remoting.protocol;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -22,11 +24,17 @@ public class RemotingCommand implements Serializable {
 
     /**
      * 请求码
+     * @see org.zk.rocketmq.common.protocol.RequestCode
      */
     private int code;
 
     /**
-     *
+     * 消息头
      */
-    //private transient byte[] body;
+    private Map<String, Object> header = new HashMap<>();
+
+    /**
+     * 消息体
+     */
+    private byte[] body;
 }
