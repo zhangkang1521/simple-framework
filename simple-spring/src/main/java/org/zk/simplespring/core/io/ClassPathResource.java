@@ -29,4 +29,9 @@ public class ClassPathResource implements Resource {
 		}
 		return is;
 	}
+
+	@Override
+	public String toString() {
+		return "classpath:" + path;
+	}
 }

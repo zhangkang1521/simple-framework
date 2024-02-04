@@ -9,6 +9,5 @@ public class DemoImportBeanDefinitionRegistrar implements ImportBeanDefinitionRe
 	public void registerBeanDefinitions(Class<?> annotationClass, DefaultListableBeanFactory defaultListableBeanFactory) {
 		EnableUser enableUser = annotationClass.getAnnotation(EnableUser.class);
 		String userName = enableUser.value();
-		System.out.println("ok");
 	}
 }

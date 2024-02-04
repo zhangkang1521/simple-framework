@@ -28,10 +28,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	@Override
 	public Object createBean(String beanName, BeanDefinition beanDefinition) {
-		log.info("create bean instance {}", beanName);
+		log.info("开始创建bean实例 {}", beanName);
 		Object bean;
 
-		// 创建bean
+		// 1.创建bean
 		String factoryBeanName = beanDefinition.getFactoryBeanName();
 		Method factoryMethod = beanDefinition.getFactoryMethod();
 		if (factoryBeanName != null && factoryMethod != null) {
@@ -46,13 +46,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				throw new RuntimeException("使用工厂方法创建bean实例异常", e);
 			}
 		} else {
+			log.info("使用构造方法实例化bean {}", beanName);
 			Class clz = beanDefinition.resolveBeanClass();
 			bean = SpringBeanUtils.instantiateClass(clz);
 		}
 
-		// 依赖注入
+		// 2.依赖注入
 		populateBean(beanName, bean, beanDefinition);
-		// 初始化
+
+		// 3.初始化
 		bean = initializeBean(beanName, bean, beanDefinition);
 
 		// 注册实现了 DisposableBean 接口的 Bean 对象
@@ -75,7 +77,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @param beanDefinition
 	 */
 	private void populateBean(String beanName, Object bean, BeanDefinition beanDefinition) {
-		log.info("populateBean {} start", beanName);
+		log.info("=== populateBean {} start ===", beanName);
 		List<PropertyValue> pvs = beanDefinition.getPropertyValueList();
 		// @Autowired @Value
 		for (BeanPostProcessor bp : getBeanPostProcessors()) {
@@ -88,7 +90,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 		applyPropertyValues(beanName, bean, beanDefinition.getPropertyValueList());
-		log.info("populateBean {} end", beanName);
+		log.info("=== populateBean {} end ===", beanName);
 	}
 
 	private void applyPropertyValues(String beanName, Object bean, List<PropertyValue> propertyValueList) {
@@ -129,13 +131,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	private Object initializeBean(String name, Object bean, BeanDefinition beanDefinition) {
 		log.info("初始化bean {}", name);
+		// 3.1 调用一系列Aware方法
 		invokeAwareMethod(name, bean);
+
 		Object wrappedBean = bean;
-		// 前置处理
+		// 3.2 前置处理
 		wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, name);
-		// 初始化方法
+		// 3.3 初始化方法
 		invokeInitMethod(wrappedBean, name);
-		// 后置处理，可能返回bean的代理
+		// 3.4 后置处理，可能返回bean的代理
 		wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, name);
 		return wrappedBean;
 	}

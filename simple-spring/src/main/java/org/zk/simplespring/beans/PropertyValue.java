@@ -1,5 +1,8 @@
 package org.zk.simplespring.beans;
 
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONUtil;
+
 public class PropertyValue {
 	private final String name;
 
@@ -19,5 +22,10 @@ public class PropertyValue {
 
 	public Object getValue() {
 		return value;
+	}
+
+	@Override
+	public String toString() {
+		return JSONUtil.toJsonStr(this);
 	}
 }

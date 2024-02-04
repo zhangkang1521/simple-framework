@@ -27,7 +27,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@Override
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
-		log.info("注册BeanDefinition {}", beanName);
+		log.info("register bean definition beanName:{} beanDefinition:{}", beanName, beanDefinition);
 		this.beanDefinitionMap.put(beanName, beanDefinition);
 	}
 

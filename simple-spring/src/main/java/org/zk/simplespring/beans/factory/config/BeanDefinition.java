@@ -1,5 +1,7 @@
 package org.zk.simplespring.beans.factory.config;
 
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONUtil;
 import org.zk.simplespring.beans.PropertyValue;
 import org.zk.simplespring.util.ClassUtils;
 
@@ -11,7 +13,7 @@ public class BeanDefinition {
 	private Object beanClass; // String或者类
 	private List<PropertyValue> propertyValueList = new ArrayList<>();
 
-	// 如果有值，则使用工厂方法创建bean
+	// 注解方式使用，如果有值，则使用工厂方法创建bean
 	private String factoryBeanName;
 	private Method factoryMethod;
 
@@ -53,5 +55,10 @@ public class BeanDefinition {
 
 	public void setFactoryMethod(Method factoryMethod) {
 		this.factoryMethod = factoryMethod;
+	}
+
+	@Override
+	public String toString() {
+		return JSONUtil.toJsonStr(this);
 	}
 }

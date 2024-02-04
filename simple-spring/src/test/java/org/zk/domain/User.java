@@ -47,7 +47,7 @@ public class User implements InitializingBean, DisposableBean, BeanNameAware, Ap
 
 	@Override
 	public void afterPropertiesSet() {
-		System.out.println("ok");
+		System.out.println("invoke user afterPropertiesSet");
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class User implements InitializingBean, DisposableBean, BeanNameAware, Ap
 
 	@Override
 	public void setBeanName(String beanName) {
-		System.out.println(beanName);
+		log.info("user setBeanName");
 	}
 
 	@Override

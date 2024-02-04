@@ -48,18 +48,23 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	public Object getBean(String name) {
 		log.info("getBean {}", name);
 		String beanName = BeanFactoryUtils.transformedBeanName(name);
+
+		// 先尝试从缓存获取
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null) {
-			// FactoryBean逻辑
 			sharedInstance = getObjectForBeanInstance(name, beanName, sharedInstance);
 			return sharedInstance;
 		}
+
+		// 获取BeanDefinition
 		BeanDefinition beanDefinition = getBeanDefinition(beanName);
 		if (beanDefinition == null) {
 			throw new RuntimeException("未找到" + beanName + "的BeanDefinition，请检查配置");
 		}
+
 		// 创建bean
 		Object bean = createBean(beanName, beanDefinition);
+
 		// FactoryBean逻辑
 		return getObjectForBeanInstance(name, beanName, bean);
 	}

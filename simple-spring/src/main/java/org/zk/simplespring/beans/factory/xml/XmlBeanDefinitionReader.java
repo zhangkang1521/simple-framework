@@ -48,7 +48,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	@Override
 	public void loadBeanDefinitions(Resource resource) {
-		log.info("loadBeanDefinition from classpath {}", resource);
+		log.info("loadBeanDefinition from {}", resource);
 		InputStream inputStream = resource.getInputStream();
 
 		try {
@@ -106,7 +106,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		String className = node.getAttribute("class");
 		BeanDefinition beanDefinition = new BeanDefinition();
 		beanDefinition.setBeanClass(className);
+		// 解析属性配置
 		parseProperty(node, beanDefinition);
+		// 注册beanDefinition
 		getRegistry().registerBeanDefinition(beanName, beanDefinition);
 	}
 
