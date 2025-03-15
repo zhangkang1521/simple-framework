@@ -19,8 +19,8 @@ public class AppConfig {
 		return new User();
 	}
 
-	@Bean
-	public Order order(User user) {
-		return new Order();
-	}
+//	@Bean
+//	public Order order(User user) {
+//		return new Order();
+//	}
 }

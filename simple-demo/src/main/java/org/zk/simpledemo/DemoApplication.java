@@ -2,25 +2,16 @@ package org.zk.simpledemo;
 
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
+import org.zk.simple.spring.web.context.support.AnnotationConfigWebApplicationContext;
+import org.zk.simpledemo.config.AppConfig;
 
 public class DemoApplication {
 
-	private static int port = 8080;
-	private static String contextPath = "/";
 
 
 	public static void main(String[] args) throws Exception {
-		Tomcat tomcat = new Tomcat();
+		new AnnotationConfigWebApplicationContext(AppConfig.class);
 
-		String baseDir = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-		tomcat.setBaseDir(baseDir);
-		tomcat.setPort(port);
-//		tomcat.setConnector(new Connector());
-
-		tomcat.addWebapp(contextPath, baseDir);
-//		tomcat.enableNaming();
-		tomcat.start();
-
-		tomcat.getServer().await();
+		System.in.read();
 	}
 }

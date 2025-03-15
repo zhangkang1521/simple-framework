@@ -16,9 +16,10 @@ public class User implements InitializingBean, DisposableBean, BeanNameAware, Ap
 
 	private int id;
 
-	@Value("${username}")
+//	@Value("${username}")
 	private String username;
-	@Autowired
+
+//	@Autowired
 	private Order order;
 
 	public int getId() {

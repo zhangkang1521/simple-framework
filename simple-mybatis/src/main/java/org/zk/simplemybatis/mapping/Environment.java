@@ -9,6 +9,9 @@ import javax.sql.DataSource;
  */
 public class Environment {
 
+	/**
+	 * 这里使用接口，是为了方便与spring整合
+	 */
 	private final TransactionFactory transactionFactory;
 	private final DataSource dataSource;
 

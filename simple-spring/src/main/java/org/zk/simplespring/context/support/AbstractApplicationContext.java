@@ -36,14 +36,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 	@Override
 	public void refresh() {
-		// 1. 创建DefaultListableBeanFactory，loadBeanDefinition
+		// 1. 创建DefaultListableBeanFactory，loadBeanDefinition（xml，注解方式不在这里加载beanDefinition）
 		obtainFreshBeanFactory();
 
 		DefaultListableBeanFactory beanFactory = getBeanFactory();
 
 		prepareBeanFactory(beanFactory);
 
-		// 2. 调用BeanFactory后置处理
+		// 2. 调用容器注册后处理器，容器后处理器
 		invokeBeanFactoryPostProcessors(beanFactory);
 
 		// 3. 注册Bean后置处理器
@@ -112,9 +112,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 			BeanFactoryPostProcessor beanFactoryPostProcessor = (BeanFactoryPostProcessor) beanFactory.getBean(beanName);
 			if (beanFactoryPostProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 				log.info("调用容器注册后处理器 {}", beanName);
+				// @Configuration 相关配置处理
+				// Mybatis 自动注入MapperBean
 				((BeanDefinitionRegistryPostProcessor) beanFactoryPostProcessor).postProcessBeanDefinitionRegistry(beanFactory);
 			}
 			log.info("调用容器后处理器 {}", beanName);
+			// PropertyPlaceholderConfigurer bean占位符替换
 			beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
 		}
 	}
@@ -123,6 +126,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	 * 注册bean后置处理器，调用在getBean中
 	 */
 	private void registerBeanPostProcessors(DefaultListableBeanFactory beanFactory) {
+		// 注册bean后置处理器，代理用
 		List<String> beanNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class);
 		for (String beanName : beanNames) {
 			BeanPostProcessor beanPostProcessor = (BeanPostProcessor) beanFactory.getBean(beanName);

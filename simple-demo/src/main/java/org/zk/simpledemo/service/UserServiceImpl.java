@@ -7,7 +7,7 @@ import org.zk.simplespring.stereotype.Service;
 
 import java.util.List;
 
-@Service
+//@Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired

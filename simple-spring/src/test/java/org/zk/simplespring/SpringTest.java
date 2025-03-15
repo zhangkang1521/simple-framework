@@ -23,7 +23,7 @@ public class SpringTest {
 	public void testGetBean() {
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 //		applicationContext.publishEvent(new ContextRefreshedEvent(applicationContext));
-		applicationContext.publishEvent(new ContextClosedEvent(applicationContext));
+//		applicationContext.publishEvent(new ContextClosedEvent(applicationContext));
 		//		Assert.assertEquals(100, user.getId());
 //		Assert.assertEquals("zk", user.getUsername());
 		applicationContext.close();

@@ -12,14 +12,14 @@ import org.zk.simplespring.context.annotation.Configuration;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan({"org.zk.simpledemo.controller", "org.zk.simpledemo.service"})
-@MapperScan(basePackage = "org.zk.simpledemo.dao", sqlSessionFactoryRef = "sqlSessionFactory")
+//@MapperScan(basePackage = "org.zk.simpledemo.dao", sqlSessionFactoryRef = "sqlSessionFactory")
 public class AppConfig  {
 
 	@Bean
 	public InternalResourceViewResolver internalResourceViewResolver() {
 		InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
-		internalResourceViewResolver.setPrefix("/WEB-INF/view/");
-		internalResourceViewResolver.setSuffix(".jsp");
+		internalResourceViewResolver.setPrefix("");
+		internalResourceViewResolver.setSuffix("");
 		return internalResourceViewResolver;
 	}
 
